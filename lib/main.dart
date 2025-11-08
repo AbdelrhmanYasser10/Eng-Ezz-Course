@@ -1,9 +1,10 @@
+import 'package:e_commerce_app_session_it_sharks/logic/calculator_cubit/calculator_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/view/calculator_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 void main() {
-
   runApp(CounterApp());
 }
 
@@ -12,55 +13,14 @@ class CounterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      home: MyHomePage(),
-    );
-  }
-}
+    return BlocProvider<CalculatorCubit> ( // Widget
+      create: (context) => CalculatorCubit(), // Business Logic Object
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+      child: MaterialApp(
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int random = 1;
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-
-      body: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: width * 0.5,
-            height: height * 0.5,
-            color:Colors.green,
-          ),
-          Positioned(
-            bottom: -50,
-            left: 10,
-            child: Container(
-              width: width * 0.25,
-              height: height * 0.25,
-              color:Colors.red,
-            ),
-          ),
-          Positioned(
-            right: -10,
-            child: Container(
-              width: width * 0.2,
-              height: height * 0.2,
-              color:Colors.yellow,
-            ),
-          ),
-        ],
+        home: CalculatorScreen(),
       ),
     );
   }
 }
+
