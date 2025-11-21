@@ -1,0 +1,188 @@
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../../../core/network/local/shared_preferences_helper.dart';
+import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_style.dart';
+import '../../../authentication/presentation/pages/login_page.dart';
+
+
+class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({super.key});
+
+  @override
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
+}
+
+class _OnBoardingPageState extends State<OnBoardingPage> {
+
+  final PageController _pageController = PageController();
+  int currentIndex = 0;
+
+  List<String> titles= [
+    "Choose Products",
+    "Make Payment",
+    "Get Your Order"
+  ];
+  List<String> description= [
+    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
+    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
+    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
+  ];
+  List<String> images= [
+    "assets/images/fashion shop-rafiki 1.png",
+    "assets/images/Sales consulting-pana 1.png",
+    "assets/images/Shopping bag-rafiki 1.png"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    text: (currentIndex + 1 ).toString(),
+                    children: [
+                      TextSpan(
+                        text: "/3",
+
+                          style: AppTextStyle.textStyleFont18GreyNormal (),
+                      ),
+
+                    ],
+                    style: AppTextStyle.textStyleFont18BlackBold(),
+                  ),
+                ),
+
+                TextButton(
+                    onPressed: (){
+                      SharedPreferencesHelper.writeDataToCache(key: "OnBoarding", value: true);
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>LoginPage()), (route)=>false);
+                    },
+
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      textStyle: AppTextStyle.textStyleFont18BlackBold(),
+                      surfaceTintColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+
+                    ),
+                    child: Text("Skip",style: AppTextStyle.textStyleFont18BlackBold(),),
+                )
+              ],
+            ),
+            Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (value) {
+                    setState(() {
+                      currentIndex = value;
+                    });
+                  },
+                  itemBuilder: (context,index){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(images[index]),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        Text(
+                          titles[index],
+                          style: AppTextStyle.textStyleFont24BlackBold(),
+                          maxLines: 1,
+                        ),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        Text(
+                          description[index],
+                          maxLines: 3,
+                          style: AppTextStyle.textStyleFont14GreyNormal(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: 3,
+                ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if(currentIndex > 0)
+                TextButton(
+                  onPressed: (){
+
+                      _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+
+                    },
+                  style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      foregroundColor: AppColors.kInactiveTextColor1
+                  ),
+                  child: Text(
+                    "Prev",
+                    style: AppTextStyle.textStyleFont18GreyBold(),
+                  ),
+                )
+                else
+                  SizedBox(),
+
+                SmoothPageIndicator(
+                    controller: _pageController,  // PageController
+                    count:  3,
+                    effect:  ExpandingDotsEffect(
+                      radius: 14.0,
+                      dotWidth: 10,
+                      dotHeight: 10,
+                      activeDotColor: Colors.black,
+                      spacing: 9.0,
+                      dotColor: Colors.grey[300]!,
+
+                    ),  // your preferred effect
+                    onDotClicked: (index){
+                    }
+                ),
+
+                TextButton(
+                    onPressed: (){
+                        if(currentIndex != 2) {
+                          _pageController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
+                        }
+                        else {
+                          SharedPreferencesHelper.writeDataToCache(key: "OnBoarding", value: true);
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (_) => LoginPage()), (
+                                  route) => false);
+                        }
+
+                    },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                    foregroundColor: AppColors.kPrimaryColor
+                  ),
+                    child: Text(
+                        currentIndex == 2 ? "Get Started":"Next",
+                      style: AppTextStyle.textStyleFont18PrimaryBold(),
+                    ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
