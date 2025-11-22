@@ -9,11 +9,13 @@ class InputField extends StatefulWidget {
   final IconData prefixIcon;
   final TextEditingController controller;
   final bool isPassword;
+  final String?Function(String?) validator;
   const InputField({
     super.key,
     required this.hintText,
     required this.prefixIcon ,
     required this.controller,
+    required this.validator,
     this.isPassword = false,
   });
 
@@ -33,6 +35,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator:  widget.validator ,
       obscureText: isSecure,
       controller: widget.controller,
       cursorColor: AppColors.kPrimaryColor,

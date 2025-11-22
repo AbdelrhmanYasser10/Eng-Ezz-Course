@@ -28,7 +28,7 @@ class AppButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            "Login",
+            text,
             style: AppTextStyle.textStyleFont18WhiteBold(),
           ),
         ),
