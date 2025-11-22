@@ -20,4 +20,12 @@ final class CancelEditing extends AuthState {}
 
 
 /// Register States
+final class UploadImageLoading extends AuthState {}
+final class UploadImageSuccessfully extends AuthState {}
+final class UploadImageError extends AuthState {}
+
+final class RegisterUserDataLoading extends AuthState {}
+final class RegisterUserDataSuccessfully extends AuthState {}
+final class RegisterUserDataError extends AuthState {}
+
 

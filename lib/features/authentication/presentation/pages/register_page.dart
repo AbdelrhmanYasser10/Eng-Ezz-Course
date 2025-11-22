@@ -218,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   AppButton(
                     onPressed: (){
-                      if(_formKey.currentState!.validate()){}
+                      context.read<AuthCubit>().uploadImage();
                     },
                     text: "Register",
                   ),
