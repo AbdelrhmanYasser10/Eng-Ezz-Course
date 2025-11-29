@@ -10,11 +10,12 @@ import '../../../../core/components/input_field.dart';
 import '../../../../core/components/space_widget.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
+import '../../../../core/utils/app_toaster.dart';
 import '../../../../core/utils/validations.dart';
+import '../../../../core/widgets/loading_widget.dart';
 import '../widgets/form_footer.dart';
 import '../widgets/social_login_buttons.dart';
 import '../widgets/title_widget.dart';
-
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -24,7 +25,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -39,10 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Padding(
-        padding:  EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -51,15 +48,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const VerticalSpace(
-                    space: 30.0,
-                  ),
-                  TitleWidget(
-                    titleText: "Create\nAccount",
-                  ),
-                  const VerticalSpace(
-                    space: 30.0,
-                  ),
+                  const VerticalSpace(space: 30.0),
+                  TitleWidget(titleText: "Create\nAccount"),
+                  const VerticalSpace(space: 30.0),
                   Center(
                     child: Stack(
                       clipBehavior: Clip.none,
@@ -69,43 +60,37 @@ class _RegisterPageState extends State<RegisterPage> {
                           radius: 30,
                           child: BlocConsumer<AuthCubit, AuthState>(
                             // Logic part for background logic (not rebuilding)
-                          listener: (context, state) {
-                            print(state);
-                            if(state is PickImageSuccessfully){
-                              // proceed to edit the image
-                              context.read<AuthCubit>().editImage();
-                            }
-                          },
+                            listener: (context, state) {
+                              print(state);
+                              if (state is PickImageSuccessfully) {
+                                // proceed to edit the image
+                                context.read<AuthCubit>().editImage();
+                              }
+                            },
                             // Rebuild the UI after the state changing ( many times)
-                          builder: (context, state) {
-                            var image = context.read<AuthCubit>().finalImage;
-                            if(image == null) {
-                              return CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
-                                ),
-                                radius: 29,
-                              );
-                            }
-                            else{
-                              return CircleAvatar(
-                                backgroundImage: FileImage(
-                                    File(
-                                      image.path,
-                                    ),
-                                ),
-                                radius: 29,
-                              );
-
-                            }
-                          },
+                            builder: (context, state) {
+                              var image = context.read<AuthCubit>().finalImage;
+                              if (image == null) {
+                                return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
+                                  ),
+                                  radius: 29,
+                                );
+                              } else {
+                                return CircleAvatar(
+                                  backgroundImage: FileImage(File(image.path)),
+                                  radius: 29,
+                                );
+                              }
+                            },
                           ),
                         ),
                         Positioned(
                           bottom: -5,
                           right: -5,
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               _scaffoldKey.currentState?.showBottomSheet(
                                 (context) => Container(
                                   padding: const EdgeInsets.symmetric(
@@ -114,40 +99,48 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: Colors.white
+                                    color: Colors.white,
                                   ),
                                   child: Column(
-                                    mainAxisSize:MainAxisSize.min,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       TextButton(
-                                          style:TextButton.styleFrom(
-                                              foregroundColor: AppColors.kPrimaryColor,
-                                              overlayColor: AppColors.kPrimaryColor,
-                                          ),
-                                          onPressed: (){
-                                            context.read<AuthCubit>().pickImage(source: "Gallery");
-                                            // Another Way
-                                            //BlocProvider.of<AuthCubit>(context).pickImage(source: "Gallery");
-                                          },
-                                          child: Text(
-                                            "Gallery",
-                                            style: AppTextStyle.textStyleFont18BlackBold(),
-                                          ),
-                                      ),
-                                      TextButton(
-                                        style:TextButton.styleFrom(
-                                          foregroundColor: AppColors.kPrimaryColor,
+                                        style: TextButton.styleFrom(
+                                          foregroundColor:
+                                              AppColors.kPrimaryColor,
                                           overlayColor: AppColors.kPrimaryColor,
                                         ),
-                                          onPressed: (){
-                                            context.read<AuthCubit>().pickImage(source: "Camera");
-                                            // Another Way
-                                            //BlocProvider.of<AuthCubit>(context).pickImage(source: "Camera");
-                                          },
-                                          child: Text(
-                                            "Camera",
-                                            style: AppTextStyle.textStyleFont18BlackBold(),
-                                          ),
+                                        onPressed: () {
+                                          context.read<AuthCubit>().pickImage(
+                                            source: "Gallery",
+                                          );
+                                          // Another Way
+                                          //BlocProvider.of<AuthCubit>(context).pickImage(source: "Gallery");
+                                        },
+                                        child: Text(
+                                          "Gallery",
+                                          style:
+                                              AppTextStyle.textStyleFont18BlackBold(),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor:
+                                              AppColors.kPrimaryColor,
+                                          overlayColor: AppColors.kPrimaryColor,
+                                        ),
+                                        onPressed: () {
+                                          context.read<AuthCubit>().pickImage(
+                                            source: "Camera",
+                                          );
+                                          // Another Way
+                                          //BlocProvider.of<AuthCubit>(context).pickImage(source: "Camera");
+                                        },
+                                        child: Text(
+                                          "Camera",
+                                          style:
+                                              AppTextStyle.textStyleFont18BlackBold(),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -170,61 +163,83 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                   ),
-                  const VerticalSpace(
-                    space: 20.0,
-                  ),
+                  const VerticalSpace(space: 20.0),
                   InputField(
                     controller: _emailController,
                     prefixIcon: Icons.email,
-                    hintText:"Email",
+                    hintText: "Email",
                     validator: emailValidator,
                   ),
-                  const VerticalSpace(
-                    space: 10.0,
-                  ),
+                  const VerticalSpace(space: 10.0),
                   InputField(
                     controller: _userNameController,
                     prefixIcon: Icons.person,
-                    hintText:"Username",
+                    hintText: "Username",
                     validator: usernameValidator,
                   ),
-                  const VerticalSpace(
-                    space: 10.0,
-                  ),
+                  const VerticalSpace(space: 10.0),
                   InputField(
                     controller: _passwordController,
                     prefixIcon: Icons.lock,
-                    hintText:"Password",
+                    hintText: "Password",
                     isPassword: true,
                     validator: passwordValidator,
                   ),
-                  const VerticalSpace(
-                    space: 10.0,
-                  ),
+                  const VerticalSpace(space: 10.0),
                   InputField(
                     controller: _confPasswordController,
                     prefixIcon: Icons.lock,
-                    hintText:"Confirm Password",
+                    hintText: "Confirm Password",
                     isPassword: true,
-                    validator: (value){
-                      if(value == null || value != _passwordController.text){
+                    validator: (value) {
+                      if (value == null || value != _passwordController.text) {
                         return "Confirmation doesn't match the password";
                       }
                       return null;
                     },
                   ),
-                  const VerticalSpace(
-                    space: 50.0,
-                  ),
-                  AppButton(
-                    onPressed: (){
-                      context.read<AuthCubit>().uploadImage();
+                  const VerticalSpace(space: 50.0),
+                  BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if(state is UploadImageSuccessfully){
+                        context.read<AuthCubit>().registerUserData(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            username: _userNameController.text,
+                        );
+                      }
+                      if(state is RegisterUserDataError){
+                        showToast(
+                          title: "Error while register",
+                          description: state.message,
+                          context: context,
+                          isError: true
+                        );
+                      }
+                      if(state is RegisterUserDataSuccessfully){
+                        showToast(
+                            title: "Register Successfully",
+                            description: "Congratulations!!!",
+                            context: context,
+                        );
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginPage()));
+                      }
                     },
-                    text: "Register",
+                    builder: (context, state) {
+                      if(state is UploadImageLoading || state is RegisterUserDataLoading){
+                        return LoadingWidget();
+                      }
+                      return AppButton(
+                        onPressed: () {
+                          if(_formKey.currentState!.validate()) {
+                            context.read<AuthCubit>().uploadImage();
+                          }
+                        },
+                        text: "Register",
+                      );
+                    },
                   ),
-                  const VerticalSpace(
-                    space: 50.0,
-                  ),
+                  const VerticalSpace(space: 50.0),
                   Center(
                     child: Text(
                       "- OR Continue with -",

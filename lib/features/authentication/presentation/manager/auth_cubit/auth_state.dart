@@ -26,6 +26,23 @@ final class UploadImageError extends AuthState {}
 
 final class RegisterUserDataLoading extends AuthState {}
 final class RegisterUserDataSuccessfully extends AuthState {}
-final class RegisterUserDataError extends AuthState {}
+final class RegisterUserDataError extends AuthState {
+  final String message;
+  RegisterUserDataError({required this.message});
+}
+
+final class LoginUserDataLoading extends AuthState {}
+final class LoginUserDataSuccessfully extends AuthState {
+  final String accessToken;
+  final String refreshToken;
+  LoginUserDataSuccessfully({
+  required this.accessToken,
+  required this.refreshToken,
+});
+}
+final class LoginUserDataError extends AuthState {
+final String message;
+LoginUserDataError({required this.message});
+}
 
 

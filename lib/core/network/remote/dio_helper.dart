@@ -29,6 +29,18 @@ abstract class DioHelper{
     return _dio.post(endPoint,data: data);
   }
 
+  static Future<Response> getData({
+    required String endPoint,
+    String? accessToken,
+
+  }){
+    _dio.options.headers = {
+      "Content-Type":"application/json",
+      "Authorization":"Bearer $accessToken",
+    };
+    return _dio.get(endPoint);
+  }
+
   // Upload file
   static Future<Response> uploadFile({
   required String endPoint,

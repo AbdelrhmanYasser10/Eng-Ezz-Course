@@ -39,9 +39,9 @@ String? passwordValidator(String? value){
     return "Password is too short";
   }
   else{
-    final passwordRegex = RegExp(r'^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).{8,}$');
+    final passwordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
     if(!passwordRegex.hasMatch(value)){
-      return "Password must contain (special character,numbers,and at least 8 characters";
+      return "Password must contain (numbers,and at least 8 characters)";
     }
     else{
       return null;

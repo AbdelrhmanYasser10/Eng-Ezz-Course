@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/shared_preferences_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/pages/home_page.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +23,22 @@ class _SplashPageState extends State<SplashPage> {
 
      Future.delayed(
         Duration(seconds: 4),
-        () {
+        () async{
 
           if(mounted) {
+            String? accessToken = await SecureStorageHelper.getData(key: "accessToken");
             bool? isPassedOnBoarding = SharedPreferencesHelper.getDataFromCache(key: 'OnBoarding');
             if(isPassedOnBoarding == true){
-              Navigator.pushAndRemoveUntil(
-                  context, MaterialPageRoute(builder: (_) => LoginPage()),(route) => false,);
+              if(accessToken == null) {
+                Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (_) => LoginPage()), (
+                    route) => false,);
+              }
+              else{
+                Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (_) => HomePage()), (
+                    route) => false,);
+              }
             }
             else {
               Navigator.pushAndRemoveUntil(

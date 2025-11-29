@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
@@ -82,9 +84,10 @@ class AuthCubit extends Cubit<AuthState> {
           }
       );
       Response response = await DioHelper.uploadFile(
-        endPoint: "files/upload",
+        endPoint: "/files/upload",
         file: formData,
       );
+      log(response.data.toString());
       if (response.statusCode == 201) {
         imageLink = response.data["location"];
         emit(UploadImageSuccessfully());
@@ -103,9 +106,61 @@ class AuthCubit extends Cubit<AuthState> {
   required String email,
     required String password,
     required String username,
-})async{}
+})async{
+    emit(RegisterUserDataLoading());
+    try {
+      Response res = await DioHelper.postData(
+        endPoint: "/users",
+        data: {
+          "email":email,
+          "password":password,
+          "name":username,
+          "avatar":imageLink,
+          "role":"customer"
+        },
+      );
+      log(res.data.toString());
+      if(res.statusCode == 201){
+        emit(RegisterUserDataSuccessfully());
+      }
+      else{
+        var message = res.data["message"].join(",");
+        emit(RegisterUserDataError(message: message));
+      }
+    }catch(err){
+      emit(RegisterUserDataError(message: "Error, try again later"));
+    }
 
 
+  }
+
+void loginUserData({required String email, required String password})async{
+    emit(LoginUserDataLoading());
+    
+    try{
+      Response response = await DioHelper.postData(endPoint: "/auth/login", data: {
+        "email":email,
+        "password":password,
+      });
+      if(response.statusCode == 201){
+        var data = response.data;
+        emit(LoginUserDataSuccessfully(
+          accessToken: data["access_token"],
+          refreshToken: data["refresh_token"],
+        ));
+      }
+      else{
+        var message = response.data["message"];
+        if(message is List<String>){
+          message = message.join(",");
+        }
+        emit(LoginUserDataError(message: message));
+      }
+    }catch(err){
+      log(err.toString());
+      emit(LoginUserDataError(message: "Try to login in another time"));
+    }
+}
 
 
 }
