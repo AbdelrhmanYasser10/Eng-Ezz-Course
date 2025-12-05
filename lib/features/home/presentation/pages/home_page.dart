@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/widgets/product_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:
-          (context) =>
-              HomeCubit()
-                ..getUserData()
-                ,
+      create: (context) => HomeCubit()..getUserData(),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           if (kDebugMode) {
@@ -80,7 +79,7 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        "All Featured",
+                        "Categories",
                         style: AppTextStyle.textStyleFont18BlackBold(),
                       ),
                       SizedBox(height: 10.0),
@@ -116,12 +115,23 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10.0),
+                      Center(
+                        child: Text(
+                          "Offers",
+                          style: AppTextStyle.textStyleFont18BlackBold(),
+                        ),
+                      ),
                       CarouselSlider(
-                        items: [Text("1"), Text("2"), Text("3")],
+                        items: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                "https://img.freepik.com/free-vector/hand-drawn-student-discount-sale-banner_23-2150594834.jpg?semt=ais_hybrid&w=740&q=80",
+                            fit: BoxFit.cover,
+                          ),
+                        ],
                         options: CarouselOptions(
-                          height: 400,
-                          aspectRatio: 16 / 9,
-                          viewportFraction: 0.8,
+                          height: 120,
+                          aspectRatio: 1.1 / 1.2,
                           initialPage: 0,
                           enableInfiniteScroll: true,
                           reverse: false,
@@ -132,23 +142,50 @@ class HomePage extends StatelessWidget {
                           ),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: true,
-                          enlargeFactor: 0.3,
+                          enlargeFactor: 0.2,
                           onPageChanged: (index, reason) {},
                           scrollDirection: Axis.horizontal,
                         ),
                       ),
                       SizedBox(height: 10.0),
-                      Card(
-                        child: Column(
-                          children: [
-                            Image.network(
-                              "https://images.unsplash.com/photo-1631087606988-a6be38fccaf6?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXMlMjBwaG90b2dyYXBoeXxlbnwwfHwwfHx8MA%3D%3D",
-                              width: 200,
-                            ),
-                            Text("title"),
-                            Text("description"),
-                            Text("price"),
-                          ],
+                      Text(
+                        "Products",
+                        style: AppTextStyle.textStyleFont18BlackBold(),
+                      ),
+                      SizedBox(height: 10.0),
+                      BlocProvider(
+                        create: (context) => ProductCubit()..getAllProducts(),
+                        child: BlocBuilder<ProductCubit, ProductState>(
+                          builder: (context, state) {
+                            if(state is GetAllProductsLoading){
+                              return const LoadingWidget();
+                            }
+                            else if(state is GetAllProductsSuccessfully) {
+                              return GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 1/1.8
+                                ),
+                                itemCount: state.allProducts.length,
+                                itemBuilder: (context, index) {
+                                  var currProduct = state.allProducts[index];
+                                  return ProductCard(
+                                    productModel: currProduct,
+                                  );
+                                },
+                              );
+                            }
+                            else{
+                              return Center(
+                                child: Text(
+                                  "err",
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ),
                     ],
