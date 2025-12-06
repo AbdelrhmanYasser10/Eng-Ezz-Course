@@ -142,8 +142,10 @@ void loginUserData({required String email, required String password})async{
         "email":email,
         "password":password,
       });
+      log(response.statusCode.toString());
       if(response.statusCode == 201){
         var data = response.data;
+        log(data.toString());
         emit(LoginUserDataSuccessfully(
           accessToken: data["access_token"],
           refreshToken: data["refresh_token"],

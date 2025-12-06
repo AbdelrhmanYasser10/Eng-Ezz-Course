@@ -13,6 +13,14 @@ abstract class AppTextStyle{
     ),
 
   );
+
+  static TextStyle textStyleFont20BlackBold ()=> GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 20.0,
+    ),
+
+  );
   static TextStyle textStyleFont16BlackBold ()=> GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontWeight: FontWeight.bold,
@@ -23,6 +31,13 @@ abstract class AppTextStyle{
   static TextStyle textStyleFont14BlackRegular ()=> GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontSize: 14.0,
+    ),
+
+  );
+  static TextStyle textStyleFont12BlackRegular ()=> GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 12.0,
+      color: Colors.black,
     ),
 
   );

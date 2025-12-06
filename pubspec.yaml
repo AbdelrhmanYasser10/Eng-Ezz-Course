@@ -49,6 +49,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   carousel_slider: ^5.1.1
   cached_network_image: ^3.4.1
+  see_more_text: ^1.1.1
 
 dev_dependencies:
   flutter_test:

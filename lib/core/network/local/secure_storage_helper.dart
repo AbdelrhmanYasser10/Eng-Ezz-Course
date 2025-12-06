@@ -20,5 +20,7 @@ abstract class SecureStorageHelper{
   static Future<String?> getData({required String key})async{
     return await _secureStorage.read(key: key);
   }
-
+  static Future<void> removeData({required String key})async{
+    await _secureStorage.delete(key: key);
+  }
 }

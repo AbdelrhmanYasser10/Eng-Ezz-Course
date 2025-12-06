@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/widgets/product_card.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,9 +23,11 @@ class HomePage extends StatelessWidget {
       create: (context) => HomeCubit()..getUserData(),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
-          if (kDebugMode) {
-            print(state);
-          }
+          if(state is GetUserDataError){
+             SecureStorageHelper.removeData(key: "accessToken");
+             Navigator.pushReplacement(
+                 context, MaterialPageRoute(builder: (_) => LoginPage()));
+            }
         },
         builder: (context, state) {
           if (state is GetUserDataLoading) {
@@ -93,6 +96,8 @@ class HomePage extends StatelessWidget {
                                 color: AppColors.kPrimaryColor,
                               );
                             } else if (state is GetAllCategoriesSuccessfully) {
+
+                              // Show up category widget list
                               return SizedBox(
                                 height: 100.0,
                                 child: ListView.builder(
