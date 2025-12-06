@@ -4,9 +4,12 @@ import 'package:e_commerce_app_session_it_sharks/core/components/app_button.dart
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:see_more_text/see_more_text.dart';
 
 import '../../../../core/styles/app_colors.dart';
+import '../manager/product_cubit/product_cubit.dart';
+import 'category_products_page.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final ProductModel productModel;
@@ -22,13 +25,14 @@ class ProductDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CarouselSlider(
-                items: productModel.images!.map((element){
-                  return CachedNetworkImage(
-                      imageUrl: element,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  );
-                }).toList(),
+                items:
+                    productModel.images!.map((element) {
+                      return CachedNetworkImage(
+                        imageUrl: element,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      );
+                    }).toList(),
                 options: CarouselOptions(
                   height: 220,
                   aspectRatio: 1.1 / 1.2,
@@ -53,81 +57,41 @@ class ProductDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        productModel.title!,
+                      productModel.title!,
                       style: AppTextStyle.textStyleFont20BlackBold(),
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
+                    const SizedBox(height: 10.0),
                     Text(
                       "Product Details",
-                      style: AppTextStyle.textStyleFont14BlackRegular().copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextStyle.textStyleFont14BlackRegular()
+                          .copyWith(fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
+                    const SizedBox(height: 5.0),
                     SeeMoreText(
                       text: productModel.description!,
                       maxLines: 3,
-                      textStyle: AppTextStyle.textStyleFont12BlackRegular().copyWith(),
+                      textStyle:
+                          AppTextStyle.textStyleFont12BlackRegular().copyWith(),
                       linkStyle: TextStyle(
-                        color:AppColors.kPrimaryColor,
+                        color: AppColors.kPrimaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                       seeMoreText: 'Read more',
                       seeLessText: 'Show less',
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Text(
                           "Categories",
-                          style: AppTextStyle.textStyleFont14BlackRegular().copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: AppTextStyle.textStyleFont14BlackRegular()
+                              .copyWith(fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.kPrimaryColor,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 8,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  productModel.category!.image!,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                productModel.category!.name!,
-                                style: AppTextStyle.textStyleFont12BlackRegular().copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        SizedBox(width: 10.0),
+                        CategoryTag(productModel: productModel),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
+                    const SizedBox(height: 5.0),
                   ],
                 ),
               ),
@@ -135,37 +99,86 @@ class ProductDetailsPage extends StatelessWidget {
           ),
           Positioned(
             bottom: 0,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize:MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Price",
-                          style: AppTextStyle.textStyleFont18BlackBold(),
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Price",
+                        style: AppTextStyle.textStyleFont18BlackBold(),
+                      ),
+                      Text(
+                        "100 EGP",
+                        style: AppTextStyle.textStyleFont18BlackBold().copyWith(
+                          color: AppColors.kPrimaryColor,
                         ),
-                        Text(
-                          "100 EGP",
-                          style: AppTextStyle.textStyleFont18BlackBold().copyWith(
-                            color: AppColors.kPrimaryColor
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Expanded(child: AppButton(text: "Checkout>", onPressed: (){})),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: AppButton(text: "Checkout>", onPressed: () {}),
+                  ),
+                ],
               ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CategoryTag extends StatelessWidget {
+  const CategoryTag({super.key, required this.productModel});
+
+  final ProductModel productModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.read<ProductCubit>().getCategoryProducts(
+          productModel.category!.id!,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (_) => CategoryProductsPage(),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColors.kPrimaryColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 8,
+              backgroundImage: CachedNetworkImageProvider(
+                productModel.category!.image!,
+              ),
+            ),
+            SizedBox(width: 4),
+            Text(
+              productModel.category!.name!,
+              style: AppTextStyle.textStyleFont12BlackRegular().copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

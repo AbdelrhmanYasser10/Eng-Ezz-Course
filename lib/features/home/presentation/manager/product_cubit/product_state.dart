@@ -6,8 +6,10 @@ sealed class ProductState {}
 final class ProductInitial extends ProductState {}
 
 final class GetAllProductsLoading extends ProductState {}
-final class GetAllProductsSuccessfully extends ProductState {
-  final List<ProductModel> allProducts;
-  GetAllProductsSuccessfully({required this.allProducts});
-}
+final class GetAllProductsSuccessfully extends ProductState {}
 final class GetAllProductsError extends ProductState {}
+
+final class GetCategoryProductsLoading extends ProductState {}
+final class GetCategoryProductsSuccessfully extends ProductState {
+}
+final class GetCategoryProductsError extends ProductState {}

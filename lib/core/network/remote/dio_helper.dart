@@ -32,13 +32,13 @@ abstract class DioHelper{
   static Future<Response> getData({
     required String endPoint,
     String? accessToken,
-
+    Map<String,dynamic>? queryParameters
   }){
     _dio.options.headers = {
       "Content-Type":"application/json",
       "Authorization":"Bearer $accessToken",
     };
-    return _dio.get(endPoint);
+    return _dio.get(endPoint,queryParameters: queryParameters);
   }
 
   // Upload file
