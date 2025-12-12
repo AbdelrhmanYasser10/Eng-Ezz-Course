@@ -13,3 +13,8 @@ final class GetCategoryProductsLoading extends ProductState {}
 final class GetCategoryProductsSuccessfully extends ProductState {
 }
 final class GetCategoryProductsError extends ProductState {}
+
+
+final class GetSimilarProductsLoading extends ProductState {}
+final class GetSimilarProductsSuccessfully extends ProductState {}
+final class GetSimilarProductsError extends ProductState {}

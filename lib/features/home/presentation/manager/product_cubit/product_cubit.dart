@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
@@ -10,8 +12,9 @@ class ProductCubit extends Cubit<ProductState> {
 
   List<ProductModel> homeProducts = [];
   List<ProductModel> categoryProducts = [];
+  List<ProductModel> similarProducts = [];
 
-  void getAllProducts() async {
+  Future<void> getAllProducts() async {
     emit(GetAllProductsLoading());
     try {
       final response = await DioHelper.getData(endPoint: "/products");
@@ -41,6 +44,24 @@ class ProductCubit extends Cubit<ProductState> {
       emit(GetCategoryProductsSuccessfully());
     } catch (err) {
       emit(GetCategoryProductsError());
+    }
+  }
+
+  void getSimilarProducts(int productId) async {
+    emit(GetSimilarProductsLoading());
+    try {
+      final response = await DioHelper.getData(
+        endPoint: "/products/$productId/related",
+      );
+      List<ProductModel> allProducts =
+          response.data
+              .map<ProductModel>((element) => ProductModel.fromJson(element))
+              .toList();
+      similarProducts = allProducts;
+      emit(GetSimilarProductsSuccessfully());
+    } catch (err) {
+      log(err.toString());
+      emit(GetSimilarProductsError());
     }
   }
 }

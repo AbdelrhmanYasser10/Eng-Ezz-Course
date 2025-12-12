@@ -9,11 +9,25 @@ import 'package:see_more_text/see_more_text.dart';
 
 import '../../../../core/styles/app_colors.dart';
 import '../manager/product_cubit/product_cubit.dart';
+import '../widgets/products_grid_widget.dart';
 import 'category_products_page.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   final ProductModel productModel;
+
   const ProductDetailsPage({super.key, required this.productModel});
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductCubit>().getSimilarProducts(widget.productModel.id!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +40,13 @@ class ProductDetailsPage extends StatelessWidget {
             children: [
               CarouselSlider(
                 items:
-                    productModel.images!.map((element) {
-                      return CachedNetworkImage(
-                        imageUrl: element,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      );
-                    }).toList(),
+                widget.productModel.images!.map((element) {
+                  return CachedNetworkImage(
+                    imageUrl: element,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  );
+                }).toList(),
                 options: CarouselOptions(
                   height: 220,
                   aspectRatio: 1.1 / 1.2,
@@ -51,48 +65,64 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      productModel.title!,
-                      style: AppTextStyle.textStyleFont20BlackBold(),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      "Product Details",
-                      style: AppTextStyle.textStyleFont14BlackRegular()
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 5.0),
-                    SeeMoreText(
-                      text: productModel.description!,
-                      maxLines: 3,
-                      textStyle:
-                          AppTextStyle.textStyleFont12BlackRegular().copyWith(),
-                      linkStyle: TextStyle(
-                        color: AppColors.kPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      seeMoreText: 'Read more',
-                      seeLessText: 'Show less',
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Categories",
+                          widget.productModel.title!,
+                          style: AppTextStyle.textStyleFont20BlackBold(),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          "Product Details",
                           style: AppTextStyle.textStyleFont14BlackRegular()
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(width: 10.0),
-                        CategoryTag(productModel: productModel),
+                        const SizedBox(height: 5.0),
+                        SeeMoreText(
+                          text: widget.productModel.description!,
+                          maxLines: 3,
+                          textStyle:
+                          AppTextStyle.textStyleFont12BlackRegular().copyWith(),
+                          linkStyle: TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          seeMoreText: 'Read more',
+                          seeLessText: 'Show less',
+                        ),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            Text(
+                              "Categories",
+                              style: AppTextStyle.textStyleFont14BlackRegular()
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(width: 10.0),
+                            CategoryTag(productModel: widget.productModel),
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          "Similar Products",
+                          style: AppTextStyle.textStyleFont14BlackRegular()
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        ProductsGridWidget(
+                          errorState: GetSimilarProductsError(),
+                          loadingState: GetSimilarProductsLoading(),
+                          type: ProductsType.SIMILAR_PRODUCTS,
+                          isScrollable: false,
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 5.0),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -101,31 +131,35 @@ class ProductDetailsPage extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Price",
-                        style: AppTextStyle.textStyleFont18BlackBold(),
-                      ),
-                      Text(
-                        "100 EGP",
-                        style: AppTextStyle.textStyleFont18BlackBold().copyWith(
-                          color: AppColors.kPrimaryColor,
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Price",
+                          style: AppTextStyle.textStyleFont18BlackBold(),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: AppButton(text: "Checkout>", onPressed: () {}),
-                  ),
-                ],
+                        Text(
+                          "100 EGP",
+                          style: AppTextStyle.textStyleFont18BlackBold()
+                              .copyWith(
+                            color: AppColors.kPrimaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                      child: AppButton(text: "Checkout>", onPressed: () {}),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
