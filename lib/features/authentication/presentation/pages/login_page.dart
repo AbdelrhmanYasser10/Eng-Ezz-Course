@@ -11,6 +11,7 @@ import '../../../../core/components/app_button.dart';
 import '../../../../core/components/input_field.dart';
 import '../../../../core/utils/app_toaster.dart';
 import '../../../../core/utils/validations.dart';
+import '../../../../core/widgets/basic_layout.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../widgets/form_footer.dart';
 import '../widgets/social_login_buttons.dart';
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         ]);
                         if(mounted) {
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (_) => HomePage()));
+                              MaterialPageRoute(builder: (_) => BasicLayout()));
                         }
                       }
                       if(state is LoginUserDataError){

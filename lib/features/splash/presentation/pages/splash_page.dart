@@ -6,6 +6,8 @@ import 'package:e_commerce_app_session_it_sharks/features/home/presentation/page
 import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/widgets/basic_layout.dart';
+
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -36,7 +38,7 @@ class _SplashPageState extends State<SplashPage> {
               }
               else{
                 Navigator.pushAndRemoveUntil(
-                  context, MaterialPageRoute(builder: (_) => HomePage()), (
+                  context, MaterialPageRoute(builder: (_) => BasicLayout()), (
                     route) => false,);
               }
             }

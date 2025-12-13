@@ -50,6 +50,10 @@ dependencies:
   carousel_slider: ^5.1.1
   cached_network_image: ^3.4.1
   see_more_text: ^1.1.1
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:
