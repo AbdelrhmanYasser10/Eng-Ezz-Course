@@ -1,6 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/shared_preferences_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/data/data_sources/auth_remote_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/data/repositories/authentication_repository_implementer.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/login_with_email_and_password.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/register_user_data.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +39,17 @@ class ECommerceApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => AuthCubit(
+            loginUseCase:LoginWithEmailAndPassword(
+                repository: AuthenticationRepositoryImplementer(
+                    authRemoteDataSource: AuthRemoteDataSourceWithDio(
+                      dio: Dio(),
+                    ),
+                ),
+            ) ,
+            registerUseCase: RegisterUserData(
+                repository: AuthenticationRepositoryImplementer(authRemoteDataSource: AuthRemoteDataSourceWithDio(dio: Dio()))),
+          ),
         ),
         BlocProvider(
           create: (context) => ProductCubit(),

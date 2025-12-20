@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/login_with_email_and_password.dart';
+import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/register_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +15,12 @@ import '../../../../../core/styles/app_colors.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  final LoginWithEmailAndPassword loginUseCase;
+  final RegisterUserData registerUseCase;
+  AuthCubit({
+    required this.loginUseCase,
+    required this.registerUseCase,
+}) : super(AuthInitial());
 
   final ImagePicker picker = ImagePicker();
   XFile? image; // before editing
