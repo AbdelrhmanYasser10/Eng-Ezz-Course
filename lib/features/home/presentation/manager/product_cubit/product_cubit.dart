@@ -17,13 +17,13 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> getAllProducts() async {
     emit(GetAllProductsLoading());
     try {
-      final response = await DioHelper.getData(endPoint: "/products");
+    /*  final response = await DioHelper.getData(endPoint: "/products");
       List<ProductModel> allProducts =
           response.data
               .map<ProductModel>((element) => ProductModel.fromJson(element))
               .toList();
       homeProducts = allProducts;
-      emit(GetAllProductsSuccessfully());
+      emit(GetAllProductsSuccessfully());*/
     } catch (err) {
       emit(GetAllProductsError());
     }
@@ -32,7 +32,7 @@ class ProductCubit extends Cubit<ProductState> {
   void getCategoryProducts(int categoryId) async {
     emit(GetCategoryProductsLoading());
     try {
-      final response = await DioHelper.getData(
+/*      final response = await DioHelper.getData(
         endPoint: "/products",
         queryParameters: {"categoryId": categoryId},
       );
@@ -41,7 +41,7 @@ class ProductCubit extends Cubit<ProductState> {
               .map<ProductModel>((element) => ProductModel.fromJson(element))
               .toList();
       categoryProducts = allProducts;
-      emit(GetCategoryProductsSuccessfully());
+      emit(GetCategoryProductsSuccessfully());*/
     } catch (err) {
       emit(GetCategoryProductsError());
     }
@@ -50,7 +50,7 @@ class ProductCubit extends Cubit<ProductState> {
   void getSimilarProducts(int productId) async {
     emit(GetSimilarProductsLoading());
     try {
-      final response = await DioHelper.getData(
+/*      final response = await DioHelper.getData(
         endPoint: "/products/$productId/related",
       );
       List<ProductModel> allProducts =
@@ -58,7 +58,7 @@ class ProductCubit extends Cubit<ProductState> {
               .map<ProductModel>((element) => ProductModel.fromJson(element))
               .toList();
       similarProducts = allProducts;
-      emit(GetSimilarProductsSuccessfully());
+      emit(GetSimilarProductsSuccessfully());*/
     } catch (err) {
       log(err.toString());
       emit(GetSimilarProductsError());

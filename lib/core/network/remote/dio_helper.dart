@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-abstract class DioHelper{
+class DioHelper{
 
-  static late Dio _dio;
+   late Dio _dio;
 
-  static void initialize(){
+  DioHelper(){
     // 1 instance of http client,
     _dio = Dio(
       BaseOptions(
@@ -18,7 +18,7 @@ abstract class DioHelper{
 
   //CRUD
   // Json request
-  static Future<Response> postData({
+   Future<Response> postData({
   required String endPoint,
   required Map<String,dynamic> data,
 
@@ -29,7 +29,7 @@ abstract class DioHelper{
     return _dio.post(endPoint,data: data);
   }
 
-  static Future<Response> getData({
+   Future<Response> getData({
     required String endPoint,
     String? accessToken,
     Map<String,dynamic>? queryParameters
@@ -42,7 +42,7 @@ abstract class DioHelper{
   }
 
   // Upload file
-  static Future<Response> uploadFile({
+   Future<Response> uploadFile({
   required String endPoint,
    required FormData file,
 })async{

@@ -13,7 +13,9 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   void getAllCategories() async{
     emit(GetAllCategoriesLoading());
     try {
+/*
       final response = await DioHelper.getData(endPoint: "/categories");
+*/
       List<CategoryModel> allCategories = [];
       /*response.data.forEach((element){
       allCategories.add(CategoryModel.fromJson(element));
@@ -22,9 +24,9 @@ class CategoriesCubit extends Cubit<CategoriesState> {
       allCategories.add(CategoryModel.fromJson(element));
     }*/
 
-      allCategories =
+     /* allCategories =
           response.data.map<CategoryModel>((element) => CategoryModel.fromJson(element))
-              .toList();
+              .toList();*/
       emit(GetAllCategoriesSuccessfully(allCategoreies: allCategories));
     }catch(err){
       log(err.toString());

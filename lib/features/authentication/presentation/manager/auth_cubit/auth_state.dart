@@ -33,11 +33,9 @@ final class RegisterUserDataError extends AuthState {
 
 final class LoginUserDataLoading extends AuthState {}
 final class LoginUserDataSuccessfully extends AuthState {
-  final String accessToken;
-  final String refreshToken;
+  final LoginResponseBody response;
   LoginUserDataSuccessfully({
-  required this.accessToken,
-  required this.refreshToken,
+  required this.response,
 });
 }
 final class LoginUserDataError extends AuthState {

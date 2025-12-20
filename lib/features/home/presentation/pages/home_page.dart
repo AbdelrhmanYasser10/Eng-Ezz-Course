@@ -24,7 +24,9 @@ class HomePage extends StatelessWidget {
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           if (state is GetUserDataError) {
+/*
             SecureStorageHelper.removeData(key: "accessToken");
+*/
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => LoginPage()),

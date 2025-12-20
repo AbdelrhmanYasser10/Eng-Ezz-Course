@@ -17,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(GetUserDataLoading());
     
     try{
-      var accessToken = await SecureStorageHelper.getData(key: "accessToken");
+ /*     var accessToken = await SecureStorageHelper.getData(key: "accessToken");
       Response response = await DioHelper.getData(endPoint: "/auth/profile", accessToken: accessToken);
       log(response.data.toString());
       if(response.statusCode == 200){
@@ -26,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
       else{
         emit(GetUserDataError());
-      }
+      }*/
     }
     catch(err){
       log(err.toString());

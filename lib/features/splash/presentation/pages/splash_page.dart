@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
         Duration(seconds: 4),
         () async{
 
-          if(mounted) {
+         /* if(mounted) {
             String? accessToken = await SecureStorageHelper.getData(key: "accessToken");
             bool? isPassedOnBoarding = SharedPreferencesHelper.getDataFromCache(key: 'OnBoarding');
             if(isPassedOnBoarding == true){
@@ -46,7 +46,7 @@ class _SplashPageState extends State<SplashPage> {
               Navigator.pushAndRemoveUntil(
                   context, MaterialPageRoute(builder: (_) => OnBoardingPage()),(route) => false,);
             }
-          }
+          }*/
         },
     ).then((value){
      });

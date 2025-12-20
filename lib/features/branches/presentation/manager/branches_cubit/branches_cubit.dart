@@ -33,11 +33,11 @@ class BranchesCubit extends Cubit<BranchesState> {
   void getAllLocations()async{
     emit(GetAllLocationsLoading());
     try {
-      final response = await DioHelper.getData(endPoint: "/locations");
+   /*   final response = await DioHelper.getData(endPoint: "/locations");
       allLocations = response.data.map<LocationModel>(
             (element) => LocationModel.fromJson(element),
       ).toList();
-      emit(GetAllLocationSuccessfully());
+      emit(GetAllLocationSuccessfully());*/
     }catch(err){
       emit(GetAllLocationsError());
     }

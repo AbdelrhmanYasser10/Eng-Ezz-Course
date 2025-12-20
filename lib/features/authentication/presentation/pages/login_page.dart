@@ -1,9 +1,7 @@
 import 'package:e_commerce_app_session_it_sharks/core/components/space_widget.dart';
-import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/register_page.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,10 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                             title: "Login successfully",
                             description: "Congrats !! :)",
                         );
-                        await Future.wait([
-                          SecureStorageHelper.saveData(key: "accessToken", value: state.accessToken),
-                          SecureStorageHelper.saveData(key: "refreshToken", value: state.refreshToken),
-                        ]);
+
                         if(mounted) {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (_) => BasicLayout()));
