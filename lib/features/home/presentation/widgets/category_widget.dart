@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/category_model.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/category_entity.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/pages/category_products_page.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
 
 class CategoryWidget extends StatelessWidget {
-  final CategoryModel categoryModel;
+  final CategoryEntity categoryModel;
   final ProductCubit value;
 
   const CategoryWidget(

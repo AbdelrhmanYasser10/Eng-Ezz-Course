@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/product_entity.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,10 +53,10 @@ class ProductsGridWidget extends StatelessWidget {
     );
   }
 
-  List<ProductModel> _getProductList(BuildContext context){
+  List<ProductEntity> _getProductList(BuildContext context){
     switch(type){
       case ProductsType.SIMILAR_PRODUCTS:
-        return context.read<ProductCubit>().similarProducts;
+        return context.read<ProductCubit>().categoryProducts;
       case ProductsType.CATEGORY_PRODUCTS:
         return context.read<ProductCubit>().categoryProducts;
       case ProductsType.HOME_PRODUCTS:

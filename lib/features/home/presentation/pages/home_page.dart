@@ -90,7 +90,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(height: 10.0),
                       BlocProvider(
                         create:
-                            (context) => CategoriesCubit()..getAllCategories(),
+                            (context) => di.sl<CategoriesCubit>()..getAllCategories(),
                         child: BlocBuilder<CategoriesCubit, CategoriesState>(
                           builder: (context, state) {
                             if (state is GetAllCategoriesLoading) {

@@ -1,37 +1,23 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/category_entity.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_categories_use_case.dart';
 import 'package:meta/meta.dart';
-
-import '../../../../../core/network/remote/dio_helper.dart';
-import '../../../data/models/category_model.dart';
 
 part 'categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
-  CategoriesCubit() : super(CategoriesInitial());
-  void getAllCategories() async{
+  final GetAllCategoriesUseCase getAllCategoriesUseCase;
+
+  CategoriesCubit({required this.getAllCategoriesUseCase})
+      : super(CategoriesInitial());
+
+  void getAllCategories() async {
     emit(GetAllCategoriesLoading());
-    try {
-/*
-      final response = await DioHelper.getData(endPoint: "/categories");
-*/
-      List<CategoryModel> allCategories = [];
-      /*response.data.forEach((element){
-      allCategories.add(CategoryModel.fromJson(element));
-    });*/
-      /*for(var element in response.data){
-      allCategories.add(CategoryModel.fromJson(element));
-    }*/
-
-     /* allCategories =
-          response.data.map<CategoryModel>((element) => CategoryModel.fromJson(element))
-              .toList();*/
-      emit(GetAllCategoriesSuccessfully(allCategoreies: allCategories));
-    }catch(err){
-      log(err.toString());
-      emit(GetAllCategoriesError());
-    }
+    final result = await getAllCategoriesUseCase();
+    result.fold(
+      (failure) => emit(GetAllCategoriesError()),
+      (categories) =>
+          emit(GetAllCategoriesSuccessfully(allCategoreies: categories)),
+    );
   }
-
 }

@@ -1,66 +1,44 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/product_entity.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_products_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_category_products_use_case.dart';
 import 'package:meta/meta.dart';
 
 part 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  ProductCubit() : super(ProductInitial());
+  final GetAllProductsUseCase getAllProductsUseCase;
+  final GetCategoryProductsUseCase getCategoryProductsUseCase;
 
-  List<ProductModel> homeProducts = [];
-  List<ProductModel> categoryProducts = [];
-  List<ProductModel> similarProducts = [];
+  ProductCubit({
+    required this.getAllProductsUseCase,
+    required this.getCategoryProductsUseCase,
+  }) : super(ProductInitial());
+
+  List<ProductEntity> homeProducts = [];
+  List<ProductEntity> categoryProducts = [];
 
   Future<void> getAllProducts() async {
     emit(GetAllProductsLoading());
-    try {
-    /*  final response = await DioHelper.getData(endPoint: "/products");
-      List<ProductModel> allProducts =
-          response.data
-              .map<ProductModel>((element) => ProductModel.fromJson(element))
-              .toList();
-      homeProducts = allProducts;
-      emit(GetAllProductsSuccessfully());*/
-    } catch (err) {
-      emit(GetAllProductsError());
-    }
+    final result = await getAllProductsUseCase();
+    result.fold(
+      (failure) => emit(GetAllProductsError()),
+      (products) {
+        homeProducts = products;
+        emit(GetAllProductsSuccessfully());
+      },
+    );
   }
 
   void getCategoryProducts(int categoryId) async {
     emit(GetCategoryProductsLoading());
-    try {
-/*      final response = await DioHelper.getData(
-        endPoint: "/products",
-        queryParameters: {"categoryId": categoryId},
-      );
-      List<ProductModel> allProducts =
-          response.data
-              .map<ProductModel>((element) => ProductModel.fromJson(element))
-              .toList();
-      categoryProducts = allProducts;
-      emit(GetCategoryProductsSuccessfully());*/
-    } catch (err) {
-      emit(GetCategoryProductsError());
-    }
-  }
-
-  void getSimilarProducts(int productId) async {
-    emit(GetSimilarProductsLoading());
-    try {
-/*      final response = await DioHelper.getData(
-        endPoint: "/products/$productId/related",
-      );
-      List<ProductModel> allProducts =
-          response.data
-              .map<ProductModel>((element) => ProductModel.fromJson(element))
-              .toList();
-      similarProducts = allProducts;
-      emit(GetSimilarProductsSuccessfully());*/
-    } catch (err) {
-      log(err.toString());
-      emit(GetSimilarProductsError());
-    }
+    final result = await getCategoryProductsUseCase(categoryId);
+    result.fold(
+      (failure) => emit(GetCategoryProductsError()),
+      (products) {
+        categoryProducts = products;
+        emit(GetCategoryProductsSuccessfully());
+      },
+    );
   }
 }

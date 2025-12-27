@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_app_session_it_sharks/core/components/app_button.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:see_more_text/see_more_text.dart';
@@ -13,7 +13,7 @@ import '../widgets/products_grid_widget.dart';
 import 'category_products_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final ProductModel productModel;
+  final ProductEntity productModel;
 
   const ProductDetailsPage({super.key, required this.productModel});
 
@@ -26,7 +26,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ProductCubit>().getSimilarProducts(widget.productModel.id!);
+    context.read<ProductCubit>().getCategoryProducts(widget.productModel.category!.id!);
   }
 
   @override
@@ -172,7 +172,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 class CategoryTag extends StatelessWidget {
   const CategoryTag({super.key, required this.productModel});
 
-  final ProductModel productModel;
+  final ProductEntity productModel;
 
   @override
   Widget build(BuildContext context) {

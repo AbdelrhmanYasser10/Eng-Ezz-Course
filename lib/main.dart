@@ -32,7 +32,7 @@ class ECommerceApp extends StatelessWidget {
           create: (context) => di.sl<SplashCubit>()..isPassedOnBoarding(),
         ),
         BlocProvider(
-          create: (context) => ProductCubit(),
+          create: (context) => di.sl<ProductCubit>(),
         ),
       ],
       child: MaterialApp(

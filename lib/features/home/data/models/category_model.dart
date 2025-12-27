@@ -1,36 +1,34 @@
-class CategoryModel {
-  int? id;
-  String? name;
-  String? slug;
-  String? image;
-  String? creationAt;
-  String? updatedAt;
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/category_entity.dart';
 
-  CategoryModel(
-      {this.id,
-        this.name,
-        this.slug,
-        this.image,
-        this.creationAt,
-        this.updatedAt});
+class CategoryModel extends CategoryEntity {
+  const CategoryModel({
+    super.id,
+    super.name,
+    super.slug,
+    super.image,
+    super.creationAt,
+    super.updatedAt,
+  });
 
-  CategoryModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    slug = json['slug'];
-    image = json['image'];
-    creationAt = json['creationAt'];
-    updatedAt = json['updatedAt'];
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      id: json['id'],
+      name: json['name'],
+      slug: json['slug'],
+      image: json['image'],
+      creationAt: json['creationAt'],
+      updatedAt: json['updatedAt'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['image'] = this.image;
-    data['creationAt'] = this.creationAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
+    return {
+      'id': id,
+      'name': name,
+      'slug': slug,
+      'image': image,
+      'creationAt': creationAt,
+      'updatedAt': updatedAt,
+    };
   }
 }

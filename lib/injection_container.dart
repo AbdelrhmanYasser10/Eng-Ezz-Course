@@ -11,8 +11,13 @@ import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources
 import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/remote_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/repositories/home_repository_impl.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/repositories/home_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_categories_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_products_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_category_products_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_user_data.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/categories_cubit/categories_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/data_sources/splash_local_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/repositories/splash_repository.dart';
@@ -29,60 +34,98 @@ import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/
 
 final sl = GetIt.instance;
 
-
-Future<void> initialize () async{
+Future<void> initialize() async {
   // Feature Manager ==> Cubits
   sl.registerFactory<AuthCubit>(
-      ()=>AuthCubit(
-          loginUseCase: sl(),
-          registerUseCase: sl(),
-          uploadImageUseCase: sl(),
-      ),
+    () => AuthCubit(
+      loginUseCase: sl(),
+      registerUseCase: sl(),
+      uploadImageUseCase: sl(),
+    ),
   );
 
   sl.registerFactory<SplashCubit>(
-        ()=>SplashCubit(
-          getAccessTokenUseCase: sl(),
-          isPassedOnBoardingUseCase: sl(),
-          passOnBoardingUseCase: sl(),
+    () => SplashCubit(
+      getAccessTokenUseCase: sl(),
+      isPassedOnBoardingUseCase: sl(),
+      passOnBoardingUseCase: sl(),
     ),
   );
   sl.registerFactory<HomeCubit>(
-        ()=>HomeCubit(
+    () => HomeCubit(
       getUserDataUseCase: sl(),
-
     ),
   );
+  sl.registerFactory<ProductCubit>(
+    () => ProductCubit(
+      getAllProductsUseCase: sl(),
+      getCategoryProductsUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<CategoriesCubit>(
+    () => CategoriesCubit(
+      getAllCategoriesUseCase: sl(),
+    ),
+  );
+
   // Repository
-  sl.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImplementer(authRemoteDataSource: sl(),authLocalDataSource: sl()),);
-  sl.registerLazySingleton<SplashRepository>(() => SplashRepositoryImpl(splashLocalDataSource: sl()),);
-  sl.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(remoteDataSource: sl() , localDataSource: sl()),);
+  sl.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepositoryImplementer(
+        authRemoteDataSource: sl(), authLocalDataSource: sl()),
+  );
+  sl.registerLazySingleton<SplashRepository>(
+    () => SplashRepositoryImpl(splashLocalDataSource: sl()),
+  );
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(remoteDataSource: sl(), localDataSource: sl()),
+  );
 
   // Use Cases
-  sl.registerLazySingleton<LoginWithEmailAndPassword>(()=> LoginWithEmailAndPassword(repository: sl()));
-  sl.registerLazySingleton<RegisterUserData>(()=> RegisterUserData(repository: sl()));
-  sl.registerLazySingleton<UploadImageUseCase>(()=> UploadImageUseCase(repository: sl()));
+  sl.registerLazySingleton<LoginWithEmailAndPassword>(
+      () => LoginWithEmailAndPassword(repository: sl()));
+  sl.registerLazySingleton<RegisterUserData>(
+      () => RegisterUserData(repository: sl()));
+  sl.registerLazySingleton<UploadImageUseCase>(
+      () => UploadImageUseCase(repository: sl()));
 
-  sl.registerLazySingleton<GetAccessTokenUseCase>(()=> GetAccessTokenUseCase(sl()));
-  sl.registerLazySingleton<IsPassedOnBoardingUseCase>(()=> IsPassedOnBoardingUseCase(repository: sl()));
-  sl.registerLazySingleton<PassOnBoardingUseCase>(()=> PassOnBoardingUseCase(sl()));
+  sl.registerLazySingleton<GetAccessTokenUseCase>(
+      () => GetAccessTokenUseCase(sl()));
+  sl.registerLazySingleton<IsPassedOnBoardingUseCase>(
+      () => IsPassedOnBoardingUseCase(repository: sl()));
+  sl.registerLazySingleton<PassOnBoardingUseCase>(
+      () => PassOnBoardingUseCase(sl()));
 
-  sl.registerLazySingleton<GetUserDataUseCase>(()=> GetUserDataUseCase(repository: sl()));
+  sl.registerLazySingleton<GetUserDataUseCase>(
+      () => GetUserDataUseCase(repository: sl()));
+  sl.registerLazySingleton<GetAllProductsUseCase>(
+      () => GetAllProductsUseCase(sl()));
+  sl.registerLazySingleton<GetAllCategoriesUseCase>(
+      () => GetAllCategoriesUseCase(sl()));
+  sl.registerLazySingleton<GetCategoryProductsUseCase>(
+      () => GetCategoryProductsUseCase(sl()));
 
   // Data Sources
-  sl.registerLazySingleton<AuthRemoteDataSource>(()=>AuthRemoteDataSourceWithDio(dio: sl()));
-  sl.registerLazySingleton<AuthLocalDataSource>(()=>AuthLocalDataSourceImplWithSecureStorage(secureStorageHelper: sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceWithDio(dio: sl()));
+  sl.registerLazySingleton<AuthLocalDataSource>(
+      () => AuthLocalDataSourceImplWithSecureStorage(
+          secureStorageHelper: sl()));
 
-  sl.registerLazySingleton<SplashLocalDataSource>(()=>SplashLocalDataSourceImplWithSPAndSecureStorage(secureStorageHelper: sl(),sharedPreferencesHelper: sl()));
+  sl.registerLazySingleton<SplashLocalDataSource>(() =>
+      SplashLocalDataSourceImplWithSPAndSecureStorage(
+          secureStorageHelper: sl(), sharedPreferencesHelper: sl()));
 
-  sl.registerLazySingleton<HomeRemoteDataSource>(()=>HomeRemoteDataSourceWithDio(sl(),));
-  sl.registerLazySingleton<HomeLocalDataSource>(()=>HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()));
+  sl.registerLazySingleton<HomeRemoteDataSource>(
+      () => HomeRemoteDataSourceWithDio(
+            sl(),
+          ));
+  sl.registerLazySingleton<HomeLocalDataSource>(
+      () => HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()));
 
   // Source
-  sl.registerLazySingleton(()=>DioHelper());
-  sl.registerLazySingleton(()=>SecureStorageHelper());
+  sl.registerLazySingleton(() => DioHelper());
+  sl.registerLazySingleton(() => SecureStorageHelper());
 
   final preference = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(()=>SharedPreferencesHelper(preference));
-
+  sl.registerLazySingleton(() => SharedPreferencesHelper(preference));
 }
