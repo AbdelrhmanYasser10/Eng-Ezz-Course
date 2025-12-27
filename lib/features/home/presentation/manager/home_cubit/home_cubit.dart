@@ -1,38 +1,27 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
-import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/user_model.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/user_entity.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_user_data.dart';
 import 'package:meta/meta.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  final GetUserDataUseCase getUserDataUseCase;
+  HomeCubit({
+    required this.getUserDataUseCase,
+}) : super(HomeInitial());
   
-  UserModel? currentUser; // variable
+  UserEntity? currentUser; // variable
   void getUserData()async{
     emit(GetUserDataLoading());
-    
-    try{
- /*     var accessToken = await SecureStorageHelper.getData(key: "accessToken");
-      Response response = await DioHelper.getData(endPoint: "/auth/profile", accessToken: accessToken);
-      log(response.data.toString());
-      if(response.statusCode == 200){
-        currentUser = UserModel.fromJson(response.data);
+    final response = await getUserDataUseCase();
+    response.fold(
+      (l) => emit(GetUserDataError()),
+      (r) {
+        currentUser = r;
         emit(GetUserDataSuccessfully());
-      }
-      else{
-        emit(GetUserDataError());
-      }*/
-    }
-    catch(err){
-      log(err.toString());
-      emit(GetUserDataError());
-    }
-    
+      },
+    );
   }
   
   

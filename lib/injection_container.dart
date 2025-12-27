@@ -7,6 +7,19 @@ import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/login_with_email_and_password.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/register_user_data.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/loca_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/remote_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/data/repositories/home_repository_impl.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/repositories/home_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_user_data.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/data/data_sources/splash_local_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/data/repositories/splash_repository_impl.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/domain/repositories/splash_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/get_access_token_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/is_passed_on_boarding_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/pass_onboarding_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,17 +40,43 @@ Future<void> initialize () async{
       ),
   );
 
+  sl.registerFactory<SplashCubit>(
+        ()=>SplashCubit(
+          getAccessTokenUseCase: sl(),
+          isPassedOnBoardingUseCase: sl(),
+          passOnBoardingUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<HomeCubit>(
+        ()=>HomeCubit(
+      getUserDataUseCase: sl(),
+
+    ),
+  );
   // Repository
   sl.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepositoryImplementer(authRemoteDataSource: sl(),authLocalDataSource: sl()),);
+  sl.registerLazySingleton<SplashRepository>(() => SplashRepositoryImpl(splashLocalDataSource: sl()),);
+  sl.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(remoteDataSource: sl() , localDataSource: sl()),);
 
   // Use Cases
   sl.registerLazySingleton<LoginWithEmailAndPassword>(()=> LoginWithEmailAndPassword(repository: sl()));
   sl.registerLazySingleton<RegisterUserData>(()=> RegisterUserData(repository: sl()));
   sl.registerLazySingleton<UploadImageUseCase>(()=> UploadImageUseCase(repository: sl()));
 
+  sl.registerLazySingleton<GetAccessTokenUseCase>(()=> GetAccessTokenUseCase(sl()));
+  sl.registerLazySingleton<IsPassedOnBoardingUseCase>(()=> IsPassedOnBoardingUseCase(repository: sl()));
+  sl.registerLazySingleton<PassOnBoardingUseCase>(()=> PassOnBoardingUseCase(sl()));
+
+  sl.registerLazySingleton<GetUserDataUseCase>(()=> GetUserDataUseCase(repository: sl()));
+
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(()=>AuthRemoteDataSourceWithDio(dio: sl()));
   sl.registerLazySingleton<AuthLocalDataSource>(()=>AuthLocalDataSourceImplWithSecureStorage(secureStorageHelper: sl()));
+
+  sl.registerLazySingleton<SplashLocalDataSource>(()=>SplashLocalDataSourceImplWithSPAndSecureStorage(secureStorageHelper: sl(),sharedPreferencesHelper: sl()));
+
+  sl.registerLazySingleton<HomeRemoteDataSource>(()=>HomeRemoteDataSourceWithDio(sl(),));
+  sl.registerLazySingleton<HomeLocalDataSource>(()=>HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()));
 
   // Source
   sl.registerLazySingleton(()=>DioHelper());

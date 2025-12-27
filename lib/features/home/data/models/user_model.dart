@@ -1,22 +1,16 @@
-class UserModel {
-  int? id;
-  String? email;
-  String? password;
-  String? name;
-  String? role;
-  String? avatar;
-  String? creationAt;
-  String? updatedAt;
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/user_entity.dart';
 
-  UserModel(
-      {this.id,
-        this.email,
-        this.password,
-        this.name,
-        this.role,
-        this.avatar,
-        this.creationAt,
-        this.updatedAt});
+class UserModel extends UserEntity {
+  UserModel({
+        super.id,
+        super.email,
+        super.password,
+        super.name,
+        super.role,
+        super.avatar,
+        super.creationAt,
+        super.updatedAt,
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

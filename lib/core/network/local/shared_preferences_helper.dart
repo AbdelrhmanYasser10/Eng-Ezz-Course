@@ -3,14 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
  class SharedPreferencesHelper {
 
 
-  static late SharedPreferences _preferences;
+   late SharedPreferences _preferences;
 
   SharedPreferencesHelper (SharedPreferences preference){
     _preferences = preference;
   }
 
 
-  static void writeDataToCache({required String key, required dynamic value})async{
+   void writeDataToCache({required String key, required dynamic value})async{
         if(value is int) {
           await _preferences.setInt(key, value);
         } else if(value is String){
@@ -27,10 +27,10 @@ import 'package:shared_preferences/shared_preferences.dart';
         }
   }
 
-  static dynamic getDataFromCache({required String key}){
+   dynamic getDataFromCache({required String key}){
     return _preferences.get(key);
   }
-  static void deleteFromCache({required String key})async{
+   void deleteFromCache({required String key})async{
      await _preferences.remove(key);
   }
 }

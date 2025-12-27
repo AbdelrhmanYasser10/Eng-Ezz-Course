@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
@@ -13,6 +12,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../manager/categories_cubit/categories_cubit.dart';
 import '../widgets/category_widget.dart';
 import '../widgets/products_grid_widget.dart';
+import 'package:e_commerce_app_session_it_sharks/injection_container.dart' as di;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,13 +20,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getUserData(),
+      create: (context) => di.sl<HomeCubit>()..getUserData(),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           if (state is GetUserDataError) {
-/*
-            SecureStorageHelper.removeData(key: "accessToken");
-*/
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => LoginPage()),

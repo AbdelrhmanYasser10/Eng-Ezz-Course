@@ -1,5 +1,6 @@
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,6 +27,9 @@ class ECommerceApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => di.sl<AuthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<SplashCubit>()..isPassedOnBoarding(),
         ),
         BlocProvider(
           create: (context) => ProductCubit(),

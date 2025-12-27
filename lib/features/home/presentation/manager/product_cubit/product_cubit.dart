@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart';
 import 'package:meta/meta.dart';
 

@@ -1,7 +1,8 @@
+import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../core/network/local/shared_preferences_helper.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
 import '../../../authentication/presentation/pages/login_page.dart';
@@ -64,7 +65,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
                 TextButton(
                     onPressed: (){
-                      SharedPreferencesHelper.writeDataToCache(key: "OnBoarding", value: true);
+                      context.read<SplashCubit>().saveOnBoardingValue(true);
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>LoginPage()), (route)=>false);
                     },
 
@@ -162,7 +163,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               curve: Curves.easeIn);
                         }
                         else {
-                          SharedPreferencesHelper.writeDataToCache(key: "OnBoarding", value: true);
+                          context.read<SplashCubit>().saveOnBoardingValue(true);
                           Navigator.pushAndRemoveUntil(context,
                               MaterialPageRoute(builder: (_) => LoginPage()), (
                                   route) => false);
