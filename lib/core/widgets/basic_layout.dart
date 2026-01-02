@@ -2,6 +2,7 @@ import 'package:e_commerce_app_session_it_sharks/features/home/presentation/page
 import 'package:flutter/material.dart';
 
 import '../../features/branches/presentation/pages/branches_page.dart';
+import '../../features/home/presentation/pages/search_page.dart';
 import '../styles/app_colors.dart';
 
 class BasicLayout extends StatefulWidget {
@@ -16,7 +17,7 @@ class _BasicLayoutState extends State<BasicLayout> {
   List<Widget> screens = [
     HomePage(),
     BranchesPage(),
-    Scaffold(),
+    SearchPage(),
     Scaffold(),
   ];
   @override
