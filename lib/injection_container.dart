@@ -15,9 +15,11 @@ import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_products_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_category_products_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_user_data.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/search_for_product.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/categories_cubit/categories_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/search_cubit/search_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/data_sources/splash_local_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/repositories/splash_repository.dart';
@@ -67,7 +69,11 @@ Future<void> initialize() async {
       getAllCategoriesUseCase: sl(),
     ),
   );
-
+  sl.registerFactory<SearchCubit>(
+        () => SearchCubit(
+      searchForProduct: sl(),
+    ),
+  );
   // Repository
   sl.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImplementer(
@@ -103,6 +109,9 @@ Future<void> initialize() async {
       () => GetAllCategoriesUseCase(sl()));
   sl.registerLazySingleton<GetCategoryProductsUseCase>(
       () => GetCategoryProductsUseCase(sl()));
+
+  sl.registerLazySingleton<SearchForProduct>(
+          () => SearchForProduct(sl()));
 
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(

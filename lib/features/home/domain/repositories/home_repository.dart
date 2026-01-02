@@ -11,6 +11,7 @@ abstract class HomeRepository {
 
   Future<Either<Failure, List<CategoryEntity>>> getAllCategories();
 
-  Future<Either<Failure, List<ProductEntity>>> getCategoryProducts(
-      int categoryId);
+  Future<Either<Failure, List<ProductEntity>>> getCategoryProducts(int categoryId);
+
+  Future<Either<Failure, List<ProductEntity>>> searchForProducts(String name);
 }

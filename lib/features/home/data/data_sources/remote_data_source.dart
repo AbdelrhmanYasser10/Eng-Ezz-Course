@@ -12,6 +12,8 @@ abstract class HomeRemoteDataSource {
   Future<List<CategoryModel>> getAllCategories();
 
   Future<List<ProductModel>> getCategoryProducts(int categoryId);
+
+  Future<List<ProductModel>> searchedProducts(String productName);
 }
 
 class HomeRemoteDataSourceWithDio implements HomeRemoteDataSource {
@@ -62,6 +64,21 @@ class HomeRemoteDataSourceWithDio implements HomeRemoteDataSource {
       final response = await dioHelper.getData(
         endPoint: "/products",
         queryParameters: {"categoryId": categoryId},
+      );
+      return (response.data as List)
+          .map((e) => ProductModel.fromJson(e))
+          .toList();
+    } catch (err) {
+      throw (ServerFailure(message: "Error, while getting category products"));
+    }
+  }
+
+  @override
+  Future<List<ProductModel>> searchedProducts(String productName) async{
+    try {
+      final response = await dioHelper.getData(
+        endPoint: "/products",
+        queryParameters: {"title": productName},
       );
       return (response.data as List)
           .map((e) => ProductModel.fromJson(e))

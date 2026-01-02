@@ -57,4 +57,14 @@ class HomeRepositoryImpl implements HomeRepository {
       return Left(err);
     }
   }
+
+  @override
+  Future<Either<Failure, List<ProductEntity>>> searchForProducts(String name) async {
+    try {
+      final products = await remoteDataSource.searchedProducts(name);
+      return Right(products);
+    } on Failure catch (err) {
+      return Left(err);
+    }
+  }
 }
