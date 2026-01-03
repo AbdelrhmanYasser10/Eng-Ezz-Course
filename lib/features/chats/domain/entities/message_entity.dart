@@ -4,15 +4,14 @@ import 'package:equatable/equatable.dart';
 class MessageEntity extends Equatable {
 
   final String content;
-  final String id;
+  final String? id;
   final String senderId;
   final String recieverId;
   final String? media;
   final Timestamp dateTime;
 
   const MessageEntity({
-   required this.content,
-   required this.id,
+   required this.content, this.id,
    required this.dateTime,
    required this.senderId,
    required this.recieverId,
@@ -25,6 +24,7 @@ class MessageEntity extends Equatable {
     id,
     dateTime,
     senderId,
+    recieverId,
     media,
   ];
 }

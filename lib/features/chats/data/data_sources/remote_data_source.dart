@@ -11,6 +11,7 @@ abstract class ChatApiDataSource {
 
 abstract class ChatFirebaseDataSource {
   Future<Unit> sendMessage(MessageModel message);
+  Stream<QuerySnapshot<dynamic>> reterieveMessages(String senderId,String receiverId);
 }
 
 class ChatApiDataSourceImplWithDio implements ChatApiDataSource {
@@ -19,7 +20,7 @@ class ChatApiDataSourceImplWithDio implements ChatApiDataSource {
   @override
   Future<List<UserModel>> getAllUsers() async {
     try {
-      final response = await dio.getData(endPoint: "users/");
+      final response = await dio.getData(endPoint: "/users/");
       return response.data
           .map<UserModel>((element) => UserModel.fromJson(element))
           .toList();
@@ -51,6 +52,18 @@ class ChatFirebaseDataSourceImpl implements ChatFirebaseDataSource{
         .add(message.toJson());
 
     return unit;
+  }
+
+  Stream<QuerySnapshot<dynamic>> reterieveMessages(String senderId,String receiverId){
+     return  firebaseFirestore
+        .collection("users")
+        .doc(senderId) // 1 Abdelrhman
+        .collection("chats")
+        .doc(receiverId) // 2 Ezz
+        .collection("messages")
+         .orderBy("dateTime")
+         .snapshots();
+
   }
 
 

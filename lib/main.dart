@@ -1,4 +1,6 @@
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/manager/chats_cubit/chats_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/search_cubit/search_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
@@ -41,6 +43,12 @@ class ECommerceApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => di.sl<SearchCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<HomeCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<ChatsCubit>(),
         ),
       ],
       child: MaterialApp(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/shared_preferences_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/data/data_sources/auth_local_data_source.dart';
@@ -7,6 +8,12 @@ import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/login_with_email_and_password.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/register_user_data.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/data/data_sources/remote_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/repositories/chat_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/getAllMessages.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/get_all_users.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/send_message.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/manager/chats_cubit/chats_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/loca_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/remote_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/repositories/home_repository_impl.dart';
@@ -34,6 +41,8 @@ import 'core/network/remote/dio_helper.dart';
 
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/upload_image_use_case.dart';
 
+import 'features/chats/data/repositories/chat_repository_impl.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initialize() async {
@@ -53,11 +62,7 @@ Future<void> initialize() async {
       passOnBoardingUseCase: sl(),
     ),
   );
-  sl.registerFactory<HomeCubit>(
-    () => HomeCubit(
-      getUserDataUseCase: sl(),
-    ),
-  );
+  sl.registerFactory<HomeCubit>(() => HomeCubit(getUserDataUseCase: sl()));
   sl.registerFactory<ProductCubit>(
     () => ProductCubit(
       getAllProductsUseCase: sl(),
@@ -65,19 +70,20 @@ Future<void> initialize() async {
     ),
   );
   sl.registerFactory<CategoriesCubit>(
-    () => CategoriesCubit(
-      getAllCategoriesUseCase: sl(),
-    ),
+    () => CategoriesCubit(getAllCategoriesUseCase: sl()),
   );
-  sl.registerFactory<SearchCubit>(
-        () => SearchCubit(
-      searchForProduct: sl(),
-    ),
+  sl.registerFactory<SearchCubit>(() => SearchCubit(searchForProduct: sl()));
+
+  sl.registerFactory<ChatsCubit>(
+    () => ChatsCubit(getAllUsers: sl(), sendMessage: sl(),getAllMessages: sl()),
   );
+
   // Repository
   sl.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImplementer(
-        authRemoteDataSource: sl(), authLocalDataSource: sl()),
+      authRemoteDataSource: sl(),
+      authLocalDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton<SplashRepository>(
     () => SplashRepositoryImpl(splashLocalDataSource: sl()),
@@ -85,55 +91,84 @@ Future<void> initialize() async {
   sl.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(remoteDataSource: sl(), localDataSource: sl()),
   );
-
+  sl.registerLazySingleton<ChatRepository>(
+    () => ChatRepositoryImpl(
+      chatFirebaseDataSource: sl(),
+      chatApiDataSource: sl(),
+    ),
+  );
   // Use Cases
   sl.registerLazySingleton<LoginWithEmailAndPassword>(
-      () => LoginWithEmailAndPassword(repository: sl()));
+    () => LoginWithEmailAndPassword(repository: sl()),
+  );
   sl.registerLazySingleton<RegisterUserData>(
-      () => RegisterUserData(repository: sl()));
+    () => RegisterUserData(repository: sl()),
+  );
   sl.registerLazySingleton<UploadImageUseCase>(
-      () => UploadImageUseCase(repository: sl()));
+    () => UploadImageUseCase(repository: sl()),
+  );
 
   sl.registerLazySingleton<GetAccessTokenUseCase>(
-      () => GetAccessTokenUseCase(sl()));
+    () => GetAccessTokenUseCase(sl()),
+  );
   sl.registerLazySingleton<IsPassedOnBoardingUseCase>(
-      () => IsPassedOnBoardingUseCase(repository: sl()));
+    () => IsPassedOnBoardingUseCase(repository: sl()),
+  );
   sl.registerLazySingleton<PassOnBoardingUseCase>(
-      () => PassOnBoardingUseCase(sl()));
+    () => PassOnBoardingUseCase(sl()),
+  );
 
   sl.registerLazySingleton<GetUserDataUseCase>(
-      () => GetUserDataUseCase(repository: sl()));
+    () => GetUserDataUseCase(repository: sl()),
+  );
   sl.registerLazySingleton<GetAllProductsUseCase>(
-      () => GetAllProductsUseCase(sl()));
+    () => GetAllProductsUseCase(sl()),
+  );
   sl.registerLazySingleton<GetAllCategoriesUseCase>(
-      () => GetAllCategoriesUseCase(sl()));
+    () => GetAllCategoriesUseCase(sl()),
+  );
   sl.registerLazySingleton<GetCategoryProductsUseCase>(
-      () => GetCategoryProductsUseCase(sl()));
+    () => GetCategoryProductsUseCase(sl()),
+  );
 
-  sl.registerLazySingleton<SearchForProduct>(
-          () => SearchForProduct(sl()));
+  sl.registerLazySingleton<SearchForProduct>(() => SearchForProduct(sl()));
 
+  sl.registerLazySingleton<SendMessage>(() => SendMessage(sl()));
+  sl.registerLazySingleton<GetAllUsers>(() => GetAllUsers(sl()));
+  sl.registerLazySingleton<GetAllMessages>(() => GetAllMessages(sl()));
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
-      () => AuthRemoteDataSourceWithDio(dio: sl()));
+    () => AuthRemoteDataSourceWithDio(dio: sl()),
+  );
   sl.registerLazySingleton<AuthLocalDataSource>(
-      () => AuthLocalDataSourceImplWithSecureStorage(
-          secureStorageHelper: sl()));
+    () => AuthLocalDataSourceImplWithSecureStorage(secureStorageHelper: sl()),
+  );
 
-  sl.registerLazySingleton<SplashLocalDataSource>(() =>
-      SplashLocalDataSourceImplWithSPAndSecureStorage(
-          secureStorageHelper: sl(), sharedPreferencesHelper: sl()));
+  sl.registerLazySingleton<SplashLocalDataSource>(
+    () => SplashLocalDataSourceImplWithSPAndSecureStorage(
+      secureStorageHelper: sl(),
+      sharedPreferencesHelper: sl(),
+    ),
+  );
 
   sl.registerLazySingleton<HomeRemoteDataSource>(
-      () => HomeRemoteDataSourceWithDio(
-            sl(),
-          ));
+    () => HomeRemoteDataSourceWithDio(sl()),
+  );
   sl.registerLazySingleton<HomeLocalDataSource>(
-      () => HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()));
+    () => HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()),
+  );
+
+  sl.registerLazySingleton<ChatApiDataSource>(
+    () => ChatApiDataSourceImplWithDio(sl()),
+  );
+  sl.registerLazySingleton<ChatFirebaseDataSource>(
+    () => ChatFirebaseDataSourceImpl(sl()),
+  );
 
   // Source
   sl.registerLazySingleton(() => DioHelper());
   sl.registerLazySingleton(() => SecureStorageHelper());
+  sl.registerLazySingleton(() => FirebaseFirestore.instance);
 
   final preference = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => SharedPreferencesHelper(preference));
