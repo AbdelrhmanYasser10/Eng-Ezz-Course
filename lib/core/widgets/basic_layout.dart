@@ -2,6 +2,7 @@ import 'package:e_commerce_app_session_it_sharks/features/home/presentation/page
 import 'package:flutter/material.dart';
 
 import '../../features/branches/presentation/pages/branches_page.dart';
+import '../../features/chats/presentation/pages/chat_page.dart';
 import '../../features/home/presentation/pages/search_page.dart';
 import '../styles/app_colors.dart';
 
@@ -18,6 +19,7 @@ class _BasicLayoutState extends State<BasicLayout> {
     HomePage(),
     BranchesPage(),
     SearchPage(),
+    ChatPage(),
     Scaffold(),
   ];
   @override
@@ -41,6 +43,10 @@ class _BasicLayoutState extends State<BasicLayout> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),
                 label: "Search"
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: "chats"
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
