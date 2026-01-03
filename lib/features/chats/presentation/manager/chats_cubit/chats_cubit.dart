@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/data/models/message_model.dart';
@@ -51,11 +53,17 @@ class ChatsCubit extends Cubit<ChatsState> {
   void getAllMessagesFunction(int senderId, int recieverId){
     getAllMessages(senderId,recieverId).listen(
           (event) {
+            print(event.docs.length);
+            print("Changed");
             allMessages = [];
             for(var element in event.docs){
             allMessages.add(MessageModel.fromJson(element.data()));
           }
+            emit(GetAllMessagesSuccessfully());
       },
+      onError: (err){
+            log("error $err");
+      }
     );
   }
 }

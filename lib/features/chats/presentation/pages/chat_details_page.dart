@@ -9,6 +9,7 @@ import 'package:e_commerce_app_session_it_sharks/injection_container.dart'
 import '../../../../core/components/input_field.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
+import 'package:chat_bubbles/chat_bubbles.dart';
 
 class ChatDetailsPage extends StatefulWidget {
   final UserEntity recieverUser;
@@ -24,16 +25,16 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        BlocProvider.of<ChatsCubit>(context).getAllMessagesFunction(
+        context.read<ChatsCubit>().getAllMessagesFunction(
           context.read<HomeCubit>().currentUser!.id!,
           widget.recieverUser.id,
         );
         return BlocConsumer<ChatsCubit, ChatsState>(
-          listener: (context, state) {
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             var cubit = BlocProvider.of<ChatsCubit>(context);
             var messages = cubit.allMessages;
+            var currentUserId = context.read<HomeCubit>().currentUser!.id!;
             return Scaffold(
               backgroundColor: Color(0xfff2f2f2),
               appBar: AppBar(
@@ -60,7 +61,20 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                   Expanded(
                     child: ListView.builder(
                       itemBuilder: (context, index) {
-                        return Text(messages[index].content);
+                        var iAmSender =
+                            currentUserId.toString() ==
+                            messages[index].senderId;
+                        return BubbleSpecialThree(
+                          text: messages[index].content,
+                          color:
+                              iAmSender ? Colors.blueAccent : Color(0xFFE8E8EE),
+                          textStyle: AppTextStyle.textStyleFont14BlackRegular()
+                              .copyWith(
+                                color: iAmSender ? Colors.white : Colors.black,
+                              ),
+                          tail: false,
+                          isSender: iAmSender,
+                        );
                       },
                       itemCount: messages.length,
                     ),
