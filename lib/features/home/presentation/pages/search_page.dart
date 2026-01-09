@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/search_cubit/search_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class SearchPage extends StatelessWidget {
             children: [
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: S.of(context).search,
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -67,7 +68,7 @@ class SearchPage extends StatelessWidget {
                     else{
                       return Center(
                         child: Text(
-                          "No matched products",
+                          S.of(context).noMatchedProducts,
                           style: AppTextStyle.textStyleFont20BlackBold(),
                         ),
                       );

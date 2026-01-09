@@ -27,6 +27,15 @@ import 'package:e_commerce_app_session_it_sharks/features/home/presentation/mana
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/search_cubit/search_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/data/data_sources/local_data_source.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/repositories/settings_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/change_app_theme.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/change_locale.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/get_app_locale.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/get_app_theme.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/logout.dart';
+import 'package:e_commerce_app_session_it_sharks/features/settings/presentation/manager/settings_cubit/settings_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/data_sources/splash_local_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/repositories/splash_repository.dart';
@@ -78,6 +87,16 @@ Future<void> initialize() async {
     () => ChatsCubit(getAllUsers: sl(), sendMessage: sl(),getAllMessages: sl()),
   );
 
+  sl.registerFactory<SettingsCubit>(
+        () => SettingsCubit(
+          changeAppTheme: sl(),
+          changeLocale: sl(),
+          getAppLocale: sl(),
+          getAppTheme: sl(),
+          logOut: sl(),
+        ),
+  );
+
   // Repository
   sl.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImplementer(
@@ -97,6 +116,13 @@ Future<void> initialize() async {
       chatApiDataSource: sl(),
     ),
   );
+
+  sl.registerLazySingleton<SettingsRepository>(
+        () => SettingsRepositoryImpl(
+      sl(),
+    ),
+  );
+
   // Use Cases
   sl.registerLazySingleton<LoginWithEmailAndPassword>(
     () => LoginWithEmailAndPassword(repository: sl()),
@@ -136,6 +162,13 @@ Future<void> initialize() async {
   sl.registerLazySingleton<SendMessage>(() => SendMessage(sl()));
   sl.registerLazySingleton<GetAllUsers>(() => GetAllUsers(sl()));
   sl.registerLazySingleton<GetAllMessages>(() => GetAllMessages(sl()));
+
+
+  sl.registerLazySingleton<LogOut>(() =>LogOut(sl()));
+  sl.registerLazySingleton<GetAppTheme>(() => GetAppTheme(sl()));
+  sl.registerLazySingleton<GetAppLocale>(() => GetAppLocale(sl()));
+  sl.registerLazySingleton<ChangeLocale>(() => ChangeLocale(sl()));
+  sl.registerLazySingleton<ChangeAppTheme>(() => ChangeAppTheme(sl()));
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceWithDio(dio: sl()),
@@ -165,6 +198,12 @@ Future<void> initialize() async {
     () => ChatFirebaseDataSourceImpl(sl()),
   );
 
+  sl.registerLazySingleton<SettingsLocalDataSource>(
+        () => SettingsLocalDataSourceWithSPAndSecureStorage(
+          sharedPreferencesHelper: sl(),
+          secureStorageHelper: sl(),
+        ),
+  );
   // Source
   sl.registerLazySingleton(() => DioHelper());
   sl.registerLazySingleton(() => SecureStorageHelper());

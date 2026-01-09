@@ -2,6 +2,7 @@ import 'package:e_commerce_app_session_it_sharks/core/components/space_widget.da
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/register_page.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 20,
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     space: 30.0,
                   ),
                   TitleWidget(
-                    titleText: "Welcome\nBack!",
+                    titleText: S.of(context).welcomeBack,
                   ),
                   const VerticalSpace(
                     space: 30.0,
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   InputField(
                     controller: _emailController,
                     prefixIcon: Icons.email,
-                    hintText: "Email",
+                    hintText: S.of(context).email,
                     validator: emailValidator,
                   ),
                   const VerticalSpace(
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   InputField(
                     controller: _passwordController,
                     prefixIcon: Icons.lock,
-                    hintText: "Password",
+                    hintText: S.of(context).password,
                     isPassword: true,
                     validator: passwordValidator,
                   ),
@@ -78,8 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                       if(state is LoginUserDataSuccessfully){
                         showToast(
                             context: context,
-                            title: "Login successfully",
-                            description: "Congrats !! :)",
+                            title: S.of(context).loginSuccessfully,
+                            description: S.of(context).congrats,
                         );
 
                         if(mounted) {
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       if(state is LoginUserDataError){
                         if(mounted) {
                           showToast(
-                              title: "Credential Error",
+                              title: S.of(context).credentialError,
                               description: state.message,
                               context: context,
                               isError: true
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           }
                         },
-                        text: "Login",
+                        text: S.of(context).login,
                       );
                     },
                   ),
@@ -129,8 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                   SocialLoginButtons(),
                   const VerticalSpace(space: 20),
                   FormFooter(
-                    hintText: "Don't have account? ",
-                    linkText: "Register",
+                    hintText: S.of(context).dontHaveAccount,
+                    linkText: S.of(context).register,
                     replacedScreen: RegisterPage(),
                   ),
                 ],

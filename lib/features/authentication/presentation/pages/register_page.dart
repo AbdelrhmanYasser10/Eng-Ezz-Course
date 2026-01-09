@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
@@ -49,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const VerticalSpace(space: 30.0),
-                  TitleWidget(titleText: "Create\nAccount"),
+                  TitleWidget(titleText: S.of(context).createAccount),
                   const VerticalSpace(space: 30.0),
                   Center(
                     child: Stack(
@@ -98,9 +98,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                     vertical: 12,
                                   ),
                                   width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                  ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -118,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           //BlocProvider.of<AuthCubit>(context).pickImage(source: "Gallery");
                                         },
                                         child: Text(
-                                          "Gallery",
+                                          S.of(context).gallery,
                                           style:
                                               AppTextStyle.textStyleFont18BlackBold(),
                                         ),
@@ -137,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           //BlocProvider.of<AuthCubit>(context).pickImage(source: "Camera");
                                         },
                                         child: Text(
-                                          "Camera",
+                                          S.of(context).camera,
                                           style:
                                               AppTextStyle.textStyleFont18BlackBold(),
                                         ),
@@ -167,21 +164,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   InputField(
                     controller: _emailController,
                     prefixIcon: Icons.email,
-                    hintText: "Email",
+                    hintText: S.of(context).email,
                     validator: emailValidator,
                   ),
                   const VerticalSpace(space: 10.0),
                   InputField(
                     controller: _userNameController,
                     prefixIcon: Icons.person,
-                    hintText: "Username",
+                    hintText: S.of(context).username,
                     validator: usernameValidator,
                   ),
                   const VerticalSpace(space: 10.0),
                   InputField(
                     controller: _passwordController,
                     prefixIcon: Icons.lock,
-                    hintText: "Password",
+                    hintText: S.of(context).password,
                     isPassword: true,
                     validator: passwordValidator,
                   ),
@@ -189,11 +186,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   InputField(
                     controller: _confPasswordController,
                     prefixIcon: Icons.lock,
-                    hintText: "Confirm Password",
+                    hintText: S.of(context).confirmPassword,
                     isPassword: true,
                     validator: (value) {
                       if (value == null || value != _passwordController.text) {
-                        return "Confirmation doesn't match the password";
+                        return S.of(context).confirmPasswordError;
                       }
                       return null;
                     },
@@ -210,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       if(state is RegisterUserDataError){
                         showToast(
-                          title: "Error while register",
+                          title: S.of(context).errorWhileRegister,
                           description: state.message,
                           context: context,
                           isError: true
@@ -218,8 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                       if(state is RegisterUserDataSuccessfully){
                         showToast(
-                            title: "Register Successfully",
-                            description: "Congratulations!!!",
+                            title: S.of(context).registerSuccessfully,
+                            description: S.of(context).congrats,
                             context: context,
                         );
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginPage()));
@@ -235,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             context.read<AuthCubit>().uploadImage();
                           }
                         },
-                        text: "Register",
+                        text: S.of(context).register,
                       );
                     },
                   ),
@@ -251,8 +248,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   SocialLoginButtons(),
                   const VerticalSpace(space: 20),
                   FormFooter(
-                    hintText: "Already Have account? ",
-                    linkText: "Login",
+                    hintText: S.of(context).alreadyHaveAccount,
+                    linkText: S.of(context).login,
                     replacedScreen: LoginPage(),
                   ),
                 ],

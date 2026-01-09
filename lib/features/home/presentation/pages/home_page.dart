@@ -5,6 +5,7 @@ import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dar
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +36,6 @@ class HomePage extends StatelessWidget {
         } else if (state is GetUserDataSuccessfully) {
           context.read<ProductCubit>().getAllProducts();
           return Scaffold(
-            backgroundColor: Color(0xffFDFDFD),
             appBar: AppBar(
               leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
               title: Image.asset(
@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
                         errorBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
-                        hintText: "Search for product .....",
+                        hintText: S.of(context).searchForProduct,
                         hintStyle: AppTextStyle.textStyleFont14GreyNormal(),
                         prefixIcon: Icon(
                           Icons.search_outlined,
@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                     ),
                     SizedBox(height: 10.0),
                     Text(
-                      "Categories",
+                      S.of(context).categories,
                       style: AppTextStyle.textStyleFont18BlackBold(),
                     ),
                     SizedBox(height: 10.0),
@@ -122,7 +122,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(height: 10.0),
                     Center(
                       child: Text(
-                        "Offers",
+                        S.of(context).offers,
                         style: AppTextStyle.textStyleFont18BlackBold(),
                       ),
                     ),
@@ -154,7 +154,7 @@ class HomePage extends StatelessWidget {
                     ),
                     SizedBox(height: 10.0),
                     Text(
-                      "Products",
+                      S.of(context).products,
                       style: AppTextStyle.textStyleFont18BlackBold(),
                     ),
                     SizedBox(height: 10.0),

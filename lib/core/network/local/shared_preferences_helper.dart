@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
   }
 
 
-   void writeDataToCache({required String key, required dynamic value})async{
+   Future<void> writeDataToCache({required String key, required dynamic value})async{
         if(value is int) {
           await _preferences.setInt(key, value);
         } else if(value is String){

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
+import '../../../../generated/l10n.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity productModel;
@@ -22,8 +23,6 @@ class ProductCard extends StatelessWidget {
             Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetailsPage(productModel: productModel)));
       },
       child: Card(
-        color: Colors.white,
-        surfaceTintColor: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -62,7 +61,7 @@ class ProductCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "${productModel.price} EGP",
+                    "${productModel.price} ${S.of(context).egp}",
                     style: AppTextStyle.textStyleFont14GreyNormal().copyWith(
                       color: AppColors.kPrimaryColor,
                       fontWeight: FontWeight.w500,

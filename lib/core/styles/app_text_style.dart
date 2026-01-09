@@ -37,14 +37,12 @@ abstract class AppTextStyle{
   static TextStyle textStyleFont12BlackRegular ()=> GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontSize: 12.0,
-      color: Colors.black,
     ),
 
   );
   static TextStyle textStyleFont8BlackRegular ()=> GoogleFonts.montserrat(
     textStyle: TextStyle(
       fontSize: 8.0,
-      color: Colors.black,
     ),
 
   );

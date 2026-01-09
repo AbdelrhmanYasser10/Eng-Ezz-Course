@@ -1,4 +1,5 @@
 import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -20,16 +21,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
 
-  List<String> titles= [
-    "Choose Products",
-    "Make Payment",
-    "Get Your Order"
-  ];
-  List<String> description= [
-    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
-    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
-    "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.",
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    titles = [
+      S.of(context).chooseProducts,
+      S.of(context).makePayment,
+      S.of(context).getYourOrder
+    ];
+    description = [
+      S.of(context).onboardingDesc,
+      S.of(context).onboardingDesc,
+      S.of(context).onboardingDesc,
+    ];
+  }
+
+  List<String> titles = [];
+  List<String> description = [];
   List<String> images= [
     "assets/images/fashion shop-rafiki 1.png",
     "assets/images/Sales consulting-pana 1.png",
@@ -39,7 +47,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -77,7 +84,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       foregroundColor: Colors.black,
 
                     ),
-                    child: Text("Skip",style: AppTextStyle.textStyleFont18BlackBold(),),
+                    child: Text(S.of(context).skip,style: AppTextStyle.textStyleFont18BlackBold(),),
                 )
               ],
             ),
@@ -132,7 +139,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       foregroundColor: AppColors.kInactiveTextColor1
                   ),
                   child: Text(
-                    "Prev",
+                    S.of(context).prev,
                     style: AppTextStyle.textStyleFont18GreyBold(),
                   ),
                 )
@@ -175,7 +182,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     foregroundColor: AppColors.kPrimaryColor
                   ),
                     child: Text(
-                        currentIndex == 2 ? "Get Started":"Next",
+                        currentIndex == 2 ? S.of(context).getStarted:S.of(context).next,
                       style: AppTextStyle.textStyleFont18PrimaryBold(),
                     ),
                 ),

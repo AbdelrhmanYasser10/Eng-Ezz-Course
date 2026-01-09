@@ -51,11 +51,10 @@ class ChatsCubit extends Cubit<ChatsState> {
   }
 
   void getAllMessagesFunction(int senderId, int recieverId){
+    allMessages = [];
     getAllMessages(senderId,recieverId).listen(
           (event) {
-            print(event.docs.length);
-            print("Changed");
-            allMessages = [];
+            allMessages.clear();
             for(var element in event.docs){
             allMessages.add(MessageModel.fromJson(element.data()));
           }

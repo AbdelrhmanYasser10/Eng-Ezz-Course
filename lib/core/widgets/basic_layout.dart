@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../features/branches/presentation/pages/branches_page.dart';
 import '../../features/chats/presentation/pages/chat_page.dart';
 import '../../features/home/presentation/pages/search_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../styles/app_colors.dart';
 
 class BasicLayout extends StatefulWidget {
@@ -20,18 +21,15 @@ class _BasicLayoutState extends State<BasicLayout> {
     BranchesPage(),
     SearchPage(),
     ChatPage(),
-    Scaffold(),
+    SettingsPage(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
-        backgroundColor: Color(0xfff2f2f2),
-        selectedItemColor: AppColors.kPrimaryColor,
-          unselectedItemColor: Colors.blueGrey,
+
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),

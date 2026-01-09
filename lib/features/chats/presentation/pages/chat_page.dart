@@ -16,10 +16,7 @@ class ChatPage extends StatelessWidget {
     var currentUserId = BlocProvider.of<HomeCubit>(context).currentUser!.id;
     BlocProvider.of<ChatsCubit>(context).getAllUsersFunction(currentUserId!);
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
       appBar: AppBar(
-        backgroundColor: Color(0xfff2f2f2),
-        surfaceTintColor: Color(0xfff2f2f2),
         title: Text(
           "Chats",
           style: AppTextStyle.textStyleFont24BlackBold(),
@@ -51,8 +48,6 @@ class ChatPage extends StatelessWidget {
                     },
                     child: Card(
                       elevation: 0,
-                      color: Colors.white,
-                      surfaceTintColor: Colors.white,
                       child:Padding(
                         padding:  EdgeInsets.symmetric(
                           vertical: 12,

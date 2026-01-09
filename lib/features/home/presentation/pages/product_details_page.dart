@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_app_session_it_sharks/core/components/app_button.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/product_entity.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:see_more_text/see_more_text.dart';
@@ -79,7 +80,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                         const SizedBox(height: 10.0),
                         Text(
-                          "Product Details",
+                          S.of(context).productDetails,
                           style: AppTextStyle.textStyleFont14BlackRegular()
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -93,14 +94,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             color: AppColors.kPrimaryColor,
                             fontWeight: FontWeight.bold,
                           ),
-                          seeMoreText: 'Read more',
-                          seeLessText: 'Show less',
+                          seeMoreText: S.of(context).readMore,
+                          seeLessText: S.of(context).showLess,
                         ),
                         const SizedBox(height: 10.0),
                         Row(
                           children: [
                             Text(
-                              "Categories",
+                              S.of(context).categories,
                               style: AppTextStyle.textStyleFont14BlackRegular()
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
@@ -110,7 +111,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                         const SizedBox(height: 10.0),
                         Text(
-                          "Similar Products",
+                          S.of(context).similarProducts,
                           style: AppTextStyle.textStyleFont14BlackRegular()
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -132,7 +133,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             left: 0,
             right: 0,
             child: Container(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
@@ -142,11 +143,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Price",
+                          S.of(context).price,
                           style: AppTextStyle.textStyleFont18BlackBold(),
                         ),
                         Text(
-                          "100 EGP",
+                          "${widget.productModel.price} ${S.of(context).egp}",
                           style: AppTextStyle.textStyleFont18BlackBold()
                               .copyWith(
                             color: AppColors.kPrimaryColor,
@@ -156,7 +157,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     const SizedBox(width: 10.0),
                     Expanded(
-                      child: AppButton(text: "Checkout>", onPressed: () {}),
+                      child: AppButton(text: "${S.of(context).checkout}>", onPressed: () {}),
                     ),
                   ],
                 ),

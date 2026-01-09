@@ -1,4 +1,5 @@
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
@@ -35,7 +36,7 @@ void showToast({required BuildContext context, required String title, required S
       return OutlinedButton.icon(
         onPressed: onClose,
         icon: const Icon(Icons.close, size: 20),
-        label: const Text('Close'),
+        label: Text(S.of(context).close),
       );
     },
   ),

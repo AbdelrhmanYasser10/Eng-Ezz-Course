@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/entities/user_entity.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/manager/chats_cubit/chats_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app_session_it_sharks/injection_container.dart'
@@ -36,10 +37,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
             var messages = cubit.allMessages;
             var currentUserId = context.read<HomeCubit>().currentUser!.id!;
             return Scaffold(
-              backgroundColor: Color(0xfff2f2f2),
               appBar: AppBar(
-                backgroundColor: Color(0xfff2f2f2),
-                surfaceTintColor: Color(0xfff2f2f2),
                 title: Row(
                   children: [
                     CircleAvatar(
@@ -86,7 +84,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                         Expanded(
                           child: InputField(
                             controller: controller,
-                            hintText: "Enter your message ....",
+                            hintText: S.of(context).enterYourMessage,
                             prefixIcon: Icons.chat,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
