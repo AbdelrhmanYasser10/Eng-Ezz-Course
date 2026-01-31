@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app_session_it_sharks/core/error/failure.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
+import 'package:e_commerce_app_session_it_sharks/core/network/remote/message_config.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/models/category_model.dart';
-import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart' hide CategoryModel;
+import 'package:e_commerce_app_session_it_sharks/features/home/data/models/product_model.dart'
+    hide CategoryModel;
 import 'package:e_commerce_app_session_it_sharks/features/home/data/models/user_model.dart';
 
 abstract class HomeRemoteDataSource {
@@ -28,6 +31,12 @@ class HomeRemoteDataSourceWithDio implements HomeRemoteDataSource {
         accessToken: accessToken,
       );
       final user = UserModel.fromJson(response.data);
+      user.fcmToken = MessagingConfig.getFCMToken();
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.id!.toString())
+          .set({"fcmToken": MessagingConfig.getFCMToken()});
+
       return user;
     } catch (err) {
       throw (ServerFailure(message: "Error, while getting user data"));
@@ -74,7 +83,7 @@ class HomeRemoteDataSourceWithDio implements HomeRemoteDataSource {
   }
 
   @override
-  Future<List<ProductModel>> searchedProducts(String productName) async{
+  Future<List<ProductModel>> searchedProducts(String productName) async {
     try {
       final response = await dioHelper.getData(
         endPoint: "/products",

@@ -403,6 +403,11 @@ class S {
   String get egp {
     return Intl.message('EGP', name: 'egp', desc: '', args: []);
   }
+
+  /// `Favourite`
+  String get favourite {
+    return Intl.message('Favourite', name: 'favourite', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

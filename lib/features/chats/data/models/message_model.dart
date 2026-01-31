@@ -1,7 +1,7 @@
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/entities/message_entity.dart';
 
 class MessageModel extends MessageEntity {
-  const MessageModel({required super.content, super.id, required super.dateTime, required super.senderId,required super.recieverId,super.media});
+  const MessageModel({required super.content, super.id, required super.dateTime, required super.senderId,required super.recieverId,super.media,super.localMediaLink});
 
 
   factory MessageModel.fromJson(Map<String,dynamic>json){

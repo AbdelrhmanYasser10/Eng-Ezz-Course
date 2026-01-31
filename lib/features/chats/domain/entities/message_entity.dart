@@ -5,9 +5,10 @@ class MessageEntity extends Equatable {
 
   final String content;
   final String? id;
-  final String senderId;
+  final String senderId; // GEMINI
   final String recieverId;
-  final String? media;
+  final String? media; // url (internet)
+  final String? localMediaLink; // url (internet)
   final Timestamp dateTime;
 
   const MessageEntity({
@@ -15,6 +16,7 @@ class MessageEntity extends Equatable {
    required this.dateTime,
    required this.senderId,
    required this.recieverId,
+    this.localMediaLink,
     this.media,
 });
 

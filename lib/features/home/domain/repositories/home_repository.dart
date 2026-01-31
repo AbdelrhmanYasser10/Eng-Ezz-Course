@@ -14,4 +14,8 @@ abstract class HomeRepository {
   Future<Either<Failure, List<ProductEntity>>> getCategoryProducts(int categoryId);
 
   Future<Either<Failure, List<ProductEntity>>> searchForProducts(String name);
+
+  Future<Either<Failure, List<ProductEntity>>> getFavourites();
+
+  Future<Either<Failure, Unit>> saveToFavourite(ProductEntity product);
 }

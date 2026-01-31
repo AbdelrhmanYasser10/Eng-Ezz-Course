@@ -5,7 +5,6 @@ import '../../features/branches/presentation/pages/branches_page.dart';
 import '../../features/chats/presentation/pages/chat_page.dart';
 import '../../features/home/presentation/pages/search_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
-import '../styles/app_colors.dart';
 
 class BasicLayout extends StatefulWidget {
   const BasicLayout({super.key});

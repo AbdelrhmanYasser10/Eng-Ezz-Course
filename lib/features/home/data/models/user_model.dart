@@ -4,6 +4,7 @@ class UserModel extends UserEntity {
   UserModel({
         super.id,
         super.email,
+        super.fcmToken,
         super.password,
         super.name,
         super.role,

@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:e_commerce_app_session_it_sharks/core/components/space_widget.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
@@ -34,8 +35,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
+          horizontal: 20.w,
+          vertical: 10.h,
         ),
         child: SingleChildScrollView(
           child: SafeArea(

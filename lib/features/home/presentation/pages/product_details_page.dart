@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:e_commerce_app_session_it_sharks/core/components/app_button.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/product_entity.dart';
@@ -49,7 +50,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   );
                 }).toList(),
                 options: CarouselOptions(
-                  height: 220,
+                  height: 220.h,
                   aspectRatio: 1.1 / 1.2,
                   initialPage: 0,
                   viewportFraction: 1,
@@ -68,7 +69,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10.r),
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Column(
@@ -84,7 +85,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           style: AppTextStyle.textStyleFont14BlackRegular()
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 5.0),
+                        SizedBox(height: 5.0.h),
                         SeeMoreText(
                           text: widget.productModel.description!,
                           maxLines: 3,
@@ -97,7 +98,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           seeMoreText: S.of(context).readMore,
                           seeLessText: S.of(context).showLess,
                         ),
-                        const SizedBox(height: 10.0),
+                        SizedBox(height: 10.0.h),
                         Row(
                           children: [
                             Text(
@@ -105,11 +106,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               style: AppTextStyle.textStyleFont14BlackRegular()
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(width: 10.0),
+                            SizedBox(width: 10.0.w),
                             CategoryTag(productModel: widget.productModel),
                           ],
                         ),
-                        const SizedBox(height: 10.0),
+                        SizedBox(height: 10.0.h),
                         Text(
                           S.of(context).similarProducts,
                           style: AppTextStyle.textStyleFont14BlackRegular()
@@ -135,7 +136,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             child: Container(
               color: Theme.of(context).cardColor,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.0.r),
                 child: Row(
                   children: [
                     Column(
@@ -155,7 +156,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 10.0),
+                    SizedBox(width: 10.0.w),
                     Expanded(
                       child: AppButton(text: "${S.of(context).checkout}>", onPressed: () {}),
                     ),
@@ -191,20 +192,20 @@ class CategoryTag extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
         decoration: BoxDecoration(
           color: AppColors.kPrimaryColor,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 8,
+              radius: 8.r,
               backgroundImage: CachedNetworkImageProvider(
                 productModel.category!.image!,
               ),
             ),
-            SizedBox(width: 4),
+            SizedBox(width: 4.w),
             Text(
               productModel.category!.name!,
               style: AppTextStyle.textStyleFont12BlackRegular().copyWith(

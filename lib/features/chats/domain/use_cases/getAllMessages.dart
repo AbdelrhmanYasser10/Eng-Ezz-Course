@@ -5,6 +5,6 @@ class GetAllMessages {
   final ChatRepository repository;
   GetAllMessages(this.repository);
 
-  Stream<QuerySnapshot<dynamic>> call(int senderId, int recieverId) =>
+  Stream<QuerySnapshot<dynamic>> call(String senderId, String recieverId) =>
       repository.getAllChatMessages(senderId, recieverId);
 }

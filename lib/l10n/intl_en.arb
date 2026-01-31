@@ -46,5 +46,6 @@
   "similarProducts": "Similar Products",
   "price": "Price",
   "checkout": "Checkout",
-  "egp": "EGP"
+  "egp": "EGP",
+  "favourite": "Favourite"
 }

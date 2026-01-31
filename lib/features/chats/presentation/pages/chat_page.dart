@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app_session_it_sharks/core/styles/app_text_style.dart';
 import 'package:e_commerce_app_session_it_sharks/core/widgets/loading_widget.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/entities/user_entity.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/manager/chats_cubit/chats_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/pages/chat_details_page.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class ChatPage extends StatelessWidget {
@@ -21,6 +24,29 @@ class ChatPage extends StatelessWidget {
           "Chats",
           style: AppTextStyle.textStyleFont24BlackBold(),
         ),
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(
+
+                  recieverUser: UserEntity(
+                      id: "-1",
+                      name: "Gemini",
+                      email:"Gemini@gmail.com",
+                      role: "Ai model",
+                      avatarLink:"assets/images/icons8-gemini-ai-250.svg",
+                  ),
+                ),));
+
+              },
+              iconSize: 24.sp,
+              icon: SvgPicture.asset(
+                "assets/images/icons8-gemini-ai-250.svg",
+                color: Colors.blue,
+
+              ),
+          ),
+        ],
       ),
       body: BlocBuilder<ChatsCubit,ChatsState>
 
@@ -37,8 +63,8 @@ class ChatPage extends StatelessWidget {
           }
           else{
             return ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8
+              padding: EdgeInsets.symmetric(
+                horizontal: 8.w
               ),
                 itemBuilder: (context, index) {
                   var item = BlocProvider.of<ChatsCubit>(context).allUsers[index];
@@ -50,19 +76,19 @@ class ChatPage extends StatelessWidget {
                       elevation: 0,
                       child:Padding(
                         padding:  EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 8,
+                          vertical: 12.h,
+                          horizontal: 8.w,
                         ),
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 24,
+                              radius: 24.r,
                               backgroundImage: CachedNetworkImageProvider(
                                 item.avatarLink,
                               ),
                             ),
                             SizedBox(
-                              width: 8,
+                              width: 8.w,
                             ),
                             Expanded(
                               child: Column(

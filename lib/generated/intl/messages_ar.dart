@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorWhileRegister": MessageLookupByLibrary.simpleMessage(
       "خطأ أثناء التسجيل",
     ),
+    "favourite": MessageLookupByLibrary.simpleMessage("المفضلة"),
     "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
     "getYourOrder": MessageLookupByLibrary.simpleMessage("استلم طلبك"),

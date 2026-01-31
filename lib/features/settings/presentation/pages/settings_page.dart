@@ -3,6 +3,7 @@ import 'package:e_commerce_app_session_it_sharks/features/settings/presentation/
 import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/styles/app_colors.dart';
 
@@ -14,7 +15,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0.r),
           child: BlocConsumer<SettingsCubit, SettingsState>(
             listener: (context, state) {
               // TODO: implement listener
@@ -28,14 +29,14 @@ class SettingsPage extends StatelessWidget {
                     S.of(context).settings,
                     style: AppTextStyle.textStyleFont24BlackBold(),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   ListTile(
                     leading: Icon(Icons.language_outlined),
                     title: Text(
                       S.of(context).lang_hint,
                       style: AppTextStyle.textStyleFont18BlackBold(),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
                     onTap: () {
                       if(cubit.languageCode =="en") {
                         cubit.changeAppLocaleFunction("ar");
@@ -45,7 +46,7 @@ class SettingsPage extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   ListTile(
                     leading: Icon(Icons.dark_mode_outlined),
                     title: Text(
@@ -62,14 +63,14 @@ class SettingsPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   ListTile(
                     leading: Icon(Icons.logout),
                     title: Text(
                       S.of(context).logout,
                       style: AppTextStyle.textStyleFont18BlackBold(),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
                     onTap: () {
                       cubit.logOutFunction();
                     },

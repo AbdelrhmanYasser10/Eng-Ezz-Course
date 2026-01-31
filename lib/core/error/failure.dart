@@ -18,3 +18,6 @@ class CacheSavingError extends Failure{
 class EmptyCacheFailure extends Failure{
   EmptyCacheFailure({required super.message});
 }
+class EmptyDataFailure extends Failure{
+  EmptyDataFailure({required super.message});
+}

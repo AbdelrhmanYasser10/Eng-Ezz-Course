@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorWhileRegister": MessageLookupByLibrary.simpleMessage(
       "Error while register",
     ),
+    "favourite": MessageLookupByLibrary.simpleMessage("Favourite"),
     "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
     "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
     "getYourOrder": MessageLookupByLibrary.simpleMessage("Get Your Order"),

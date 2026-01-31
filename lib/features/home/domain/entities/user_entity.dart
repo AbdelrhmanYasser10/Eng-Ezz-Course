@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
-  int? id;
+  String? id;
   String? email;
+  String? fcmToken;
   String? password;
   String? name;
   String? role;
@@ -13,6 +14,7 @@ class UserEntity extends Equatable {
   UserEntity(
       {this.id,
         this.email,
+        this.fcmToken,
         this.password,
         this.name,
         this.role,
@@ -28,6 +30,7 @@ class UserEntity extends Equatable {
     role,
     avatar,
     creationAt,
+    fcmToken,
     updatedAt,
   ];
 }

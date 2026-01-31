@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_session_it_sharks/core/error/failure.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/remote/dio_helper.dart';
@@ -26,6 +27,7 @@ class AuthRemoteDataSourceWithDio implements AuthRemoteDataSource{
       );
       if(response.statusCode == 201) {
         final loginResponse = LoginResponseModel.fromJson(response.data);
+
         return loginResponse;
       }
       else{

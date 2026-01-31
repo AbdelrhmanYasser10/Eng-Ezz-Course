@@ -3,6 +3,7 @@ import 'package:e_commerce_app_session_it_sharks/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_style.dart';
@@ -48,7 +49,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0.r),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -102,7 +103,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       children: [
                         Image.asset(images[index]),
                         SizedBox(
-                          height: 5.0,
+                          height: 5.0.h,
                         ),
                         Text(
                           titles[index],
@@ -110,7 +111,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           maxLines: 1,
                         ),
                         SizedBox(
-                          height: 5.0,
+                          height: 5.0.h,
                         ),
                         Text(
                           description[index],
@@ -150,11 +151,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     controller: _pageController,  // PageController
                     count:  3,
                     effect:  ExpandingDotsEffect(
-                      radius: 14.0,
-                      dotWidth: 10,
-                      dotHeight: 10,
+                      radius: 14.0.r,
+                      dotWidth: 10.w,
+                      dotHeight: 10.h,
                       activeDotColor: Colors.black,
-                      spacing: 9.0,
+                      spacing: 9.0.w,
                       dotColor: Colors.grey[300]!,
 
                     ),  // your preferred effect

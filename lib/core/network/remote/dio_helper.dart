@@ -51,6 +51,14 @@ class DioHelper{
     };
     return await _dio.post(endPoint,data: file);
   }
+   // Download file
+   Future<Response> download({
+     required String endPoint,
+
+   })async{
+
+     return await _dio.download(endPoint,"Downloads/");
+   }
 
 
 }

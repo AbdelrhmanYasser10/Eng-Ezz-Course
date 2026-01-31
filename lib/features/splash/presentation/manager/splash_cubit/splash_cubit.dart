@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/get_access_token_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/is_passed_on_boarding_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/pass_onboarding_use_case.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 part 'splash_state.dart';
@@ -18,18 +19,23 @@ class SplashCubit extends Cubit<SplashState> {
 
 
   void getAccessToken()async{
-    final result = await getAccessTokenUseCase();
-    result.fold(
-      (l){
-        if(l == null){
-          emit(GetAccessTokenError());
-        }
-        else{
-          emit(GetAccessTokenSuccessfully());
-        }
-      },
-    (r) => emit(GetAccessTokenError()),
-    );
+    if(FirebaseAuth.instance.currentUser != null){
+      emit(GetAccessTokenSuccessfully());
+    }
+    else {
+      final result = await getAccessTokenUseCase();
+      result.fold(
+            (l) {
+          if (l == null) {
+            emit(GetAccessTokenError());
+          }
+          else {
+            emit(GetAccessTokenSuccessfully());
+          }
+        },
+            (r) => emit(GetAccessTokenError()),
+      );
+    }
   }
 
 

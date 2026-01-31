@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/entities/category_entity.dart';
@@ -30,17 +31,17 @@ class CategoryWidget extends StatelessWidget {
             ),),);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 10.0.w),
         child: SizedBox(
-          width: 70,
-          height: 80,
+          width: 70.w,
+          height: 80.h,
           child: Column(
             children: [
               CircleAvatar(
-                radius: 36.0,
+                radius: 36.0.r,
                 backgroundColor: AppColors.kPrimaryColor,
                 child: CircleAvatar(
-                  radius: 32.0,
+                  radius: 32.0.r,
                   backgroundImage: CachedNetworkImageProvider(
                     categoryModel.image!,
                     errorListener: (element) {},

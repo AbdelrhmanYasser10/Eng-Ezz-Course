@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/pages/login_page.dart';
@@ -39,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -57,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         CircleAvatar(
                           backgroundColor: AppColors.kPrimaryColor,
-                          radius: 30,
+                          radius: 30.r,
                           child: BlocConsumer<AuthCubit, AuthState>(
                             // Logic part for background logic (not rebuilding)
                             listener: (context, state) {
@@ -75,12 +76,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   backgroundImage: NetworkImage(
                                     "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
                                   ),
-                                  radius: 29,
+                                  radius: 29.r,
                                 );
                               } else {
                                 return CircleAvatar(
                                   backgroundImage: FileImage(File(image.path)),
-                                  radius: 29,
+                                  radius: 29.r,
                                 );
                               }
                             },
@@ -93,9 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             onTap: () {
                               _scaffoldKey.currentState?.showBottomSheet(
                                 (context) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 12.h,
                                   ),
                                   width: double.infinity,
                                   child: Column(
@@ -145,12 +146,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
                             },
                             child: CircleAvatar(
-                              radius: 10,
+                              radius: 10.r,
                               backgroundColor: AppColors.kPrimaryColor,
                               child: Center(
                                 child: Icon(
                                   Icons.add,
-                                  size: 15,
+                                  size: 15.sp,
                                   color: Colors.white,
                                 ),
                               ),

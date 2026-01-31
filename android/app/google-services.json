@@ -12,7 +12,20 @@
           "package_name": "com.example.e_commerce_app_session_it_sharks"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "52216104618-2u8qse2aduot5p8h8cvpp4ovam0ttcs8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_commerce_app_session_it_sharks",
+            "certificate_hash": "f4b210df7e899e8b064d02dcdd21236c61409a15"
+          }
+        },
+        {
+          "client_id": "52216104618-c9hna9eitkkv93vh3tgbosv956ir32u0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBW5Ci0DdPPQxkl5llhEbpDaWLD28yI5Z4"
@@ -20,7 +33,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103272714650624970996",
+              "client_type": 3
+            },
+            {
+              "client_id": "52216104618-92kef6rlkgvguvc3nbnto2o6b6g3e4bv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eCommerceAppSessionItSharks"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52216104618:android:f2ee8839af53bd2a4872d3",
+        "android_client_info": {
+          "package_name": "com.itsharks.ecommerce_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52216104618-c9hna9eitkkv93vh3tgbosv956ir32u0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW5Ci0DdPPQxkl5llhEbpDaWLD28yI5Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103272714650624970996",
+              "client_type": 3
+            },
+            {
+              "client_id": "52216104618-92kef6rlkgvguvc3nbnto2o6b6g3e4bv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eCommerceAppSessionItSharks"
+              }
+            }
+          ]
         }
       }
     }

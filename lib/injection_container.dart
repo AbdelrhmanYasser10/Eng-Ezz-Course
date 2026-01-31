@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloudinary/cloudinary.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/secure_storage_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/core/network/local/shared_preferences_helper.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/data/data_sources/auth_local_data_source.dart';
@@ -8,11 +9,16 @@ import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/login_with_email_and_password.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/domain/use_cases/register_user_data.dart';
 import 'package:e_commerce_app_session_it_sharks/features/authentication/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/data/data_sources/local_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/data/data_sources/remote_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/repositories/chat_repository.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/edit_image_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/getAllMessages.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/get_all_users.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/pick_file_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/pick_image_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/send_message.dart';
+import 'package:e_commerce_app_session_it_sharks/features/chats/domain/use_cases/upload_image_to_server.dart';
 import 'package:e_commerce_app_session_it_sharks/features/chats/presentation/manager/chats_cubit/chats_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/loca_data_source.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/data/data_sources/remote_data_source.dart';
@@ -21,9 +27,12 @@ import 'package:e_commerce_app_session_it_sharks/features/home/domain/repositori
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_categories_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_all_products_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_category_products_use_case.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_favourite_products.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/get_user_data.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/save_product_in_favourite.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/domain/use_cases/search_for_product.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/categories_cubit/categories_cubit.dart';
+import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/fav_cubit/fav_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/home_cubit/home_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/product_cubit/product_cubit.dart';
 import 'package:e_commerce_app_session_it_sharks/features/home/presentation/manager/search_cubit/search_cubit.dart';
@@ -43,6 +52,7 @@ import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_case
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/is_passed_on_boarding_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/domain/use_cases/pass_onboarding_use_case.dart';
 import 'package:e_commerce_app_session_it_sharks/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,7 +81,8 @@ Future<void> initialize() async {
       passOnBoardingUseCase: sl(),
     ),
   );
-  sl.registerFactory<HomeCubit>(() => HomeCubit(getUserDataUseCase: sl()));
+  sl.registerFactory<HomeCubit>(() => HomeCubit(getUserDataUseCase: sl(),));
+  sl.registerFactory<FavCubit>(() => FavCubit(getFavouriteProducts: sl(),saveProductInFavourite: sl()));
   sl.registerFactory<ProductCubit>(
     () => ProductCubit(
       getAllProductsUseCase: sl(),
@@ -84,7 +95,8 @@ Future<void> initialize() async {
   sl.registerFactory<SearchCubit>(() => SearchCubit(searchForProduct: sl()));
 
   sl.registerFactory<ChatsCubit>(
-    () => ChatsCubit(getAllUsers: sl(), sendMessage: sl(),getAllMessages: sl()),
+    () => ChatsCubit(getAllUsers: sl(), sendMessage: sl(),getAllMessages: sl(),editImageUseCase: sl(),pickImageUseCase: sl(),
+    uploadFileToServer: sl(),pickFileUseCase: sl()),
   );
 
   sl.registerFactory<SettingsCubit>(
@@ -114,6 +126,7 @@ Future<void> initialize() async {
     () => ChatRepositoryImpl(
       chatFirebaseDataSource: sl(),
       chatApiDataSource: sl(),
+      chatLocalDataSource: sl(),
     ),
   );
 
@@ -132,6 +145,14 @@ Future<void> initialize() async {
   );
   sl.registerLazySingleton<UploadImageUseCase>(
     () => UploadImageUseCase(repository: sl()),
+  );
+
+  sl.registerLazySingleton<SaveProductInFavourite>(
+        () => SaveProductInFavourite(repository: sl()),
+  );
+
+  sl.registerLazySingleton<GetFavouriteProducts>(
+        () => GetFavouriteProducts(repository: sl()),
   );
 
   sl.registerLazySingleton<GetAccessTokenUseCase>(
@@ -169,6 +190,12 @@ Future<void> initialize() async {
   sl.registerLazySingleton<GetAppLocale>(() => GetAppLocale(sl()));
   sl.registerLazySingleton<ChangeLocale>(() => ChangeLocale(sl()));
   sl.registerLazySingleton<ChangeAppTheme>(() => ChangeAppTheme(sl()));
+
+
+  sl.registerLazySingleton<EditImageUseCase>(() => EditImageUseCase(sl()));
+  sl.registerLazySingleton<UploadFileToServer>(() => UploadFileToServer(sl()));
+  sl.registerLazySingleton<PickImageUseCase>(() => PickImageUseCase(sl()));
+  sl.registerLazySingleton<PickFileUseCase>(() => PickFileUseCase(sl()));
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceWithDio(dio: sl()),
@@ -183,19 +210,23 @@ Future<void> initialize() async {
       sharedPreferencesHelper: sl(),
     ),
   );
+  sl.registerLazySingleton<ChatLocalDataSource>(
+        () => ChatLocalDataSourceImplWithImagePickerAndImageCropper(
 
+    ),
+  );
   sl.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceWithDio(sl()),
   );
   sl.registerLazySingleton<HomeLocalDataSource>(
-    () => HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl()),
+    () => HomeLocalDataSourceWithSecureStorage(secureStorageHelper: sl(),sharedPreferencesHelper: sl()),
   );
 
   sl.registerLazySingleton<ChatApiDataSource>(
-    () => ChatApiDataSourceImplWithDio(sl()),
+    () => ChatApiDataSourceImplWithDio(sl(),sl()),
   );
   sl.registerLazySingleton<ChatFirebaseDataSource>(
-    () => ChatFirebaseDataSourceImpl(sl()),
+    () => ChatFirebaseDataSourceImpl(sl(),sl()),
   );
 
   sl.registerLazySingleton<SettingsLocalDataSource>(
@@ -206,6 +237,12 @@ Future<void> initialize() async {
   );
   // Source
   sl.registerLazySingleton(() => DioHelper());
+  sl.registerLazySingleton(() => Cloudinary.signedConfig(
+    apiKey: "695778257248942",
+    apiSecret: "IXapZY_bn8rwO502wi-Oms4dUWA",
+    cloudName: "dg53pyttf",
+  ));
+  sl.registerLazySingleton(() => FirebaseAI.googleAI().generativeModel(model: 'gemini-2.5-flash'));
   sl.registerLazySingleton(() => SecureStorageHelper());
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
 

@@ -4,6 +4,7 @@ import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_ca
 import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/get_app_locale.dart';
 import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/get_app_theme.dart';
 import 'package:e_commerce_app_session_it_sharks/features/settings/domain/use_cases/logout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 part 'settings_state.dart';
@@ -54,10 +55,16 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void logOutFunction() async {
-    final response = await logOut();
-    response.fold((l) {}, (r) {
+    if(FirebaseAuth.instance.currentUser != null){
+      FirebaseAuth.instance.signOut();
       emit(LogoutState());
-    });
+    }
+    else {
+      final response = await logOut();
+      response.fold((l) {}, (r) {
+        emit(LogoutState());
+      });
+    }
   }
   
   void getAppCurrentLocale() {
