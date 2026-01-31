@@ -31,57 +31,61 @@ abstract class MessagingConfig {
 
     final notificationSettings = await FirebaseMessaging.instance.requestPermission();
     if(notificationSettings.authorizationStatus == AuthorizationStatus.authorized || notificationSettings.authorizationStatus == AuthorizationStatus.provisional){
-      if(Platform.isIOS){
-        await FirebaseMessaging.instance.getAPNSToken();
-      }
-      _fcmToken = await FirebaseMessaging.instance.getToken();
-      log("my token is $_fcmToken");
+      try {
+        if (Platform.isIOS) {
+          await FirebaseMessaging.instance.getAPNSToken();
+        }
+        _fcmToken = await FirebaseMessaging.instance.getToken();
+        log("my token is $_fcmToken");
 
-      const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings("@mipmap/ic_launcher");
-      const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings();
-      const InitializationSettings notificationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS:  initializationSettingsIOS,
-      );
-
-      await _flutterLocalNotificationPlugin.initialize(settings: notificationSettings,onDidReceiveNotificationResponse: (details) {
-        log("notification Details ${details.payload.toString()}");
-      },);
-      FirebaseMessaging.onMessage.listen((event)async{
-        RemoteNotification? notification = event.notification;
-
-        var body = notification?.body;
-        await _flutterLocalNotificationPlugin.show(
-          id: notification.hashCode,
-          title: notification?.title,
-          body: body,
-          notificationDetails: const NotificationDetails(
-            android: AndroidNotificationDetails(
-              "high_importance_channel"
-              ,
-              "High Importance Notifications",
-              channelDescription: "This channel used for important notifications",
-                icon: "@mipmap/ic_launcher",
-                importance: Importance.max,
-            ),
-            iOS: DarwinNotificationDetails(
-              presentAlert: true,
-              presentBadge: true,
-              presentSound: true,
-            ),
-          ),
-
+        const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings(
+            "@mipmap/ic_launcher");
+        const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings();
+        const InitializationSettings notificationSettings = InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS,
         );
 
-      });
+        await _flutterLocalNotificationPlugin.initialize(
+          settings: notificationSettings,
+          onDidReceiveNotificationResponse: (details) {
+            log("notification Details ${details.payload.toString()}");
+          },);
+        FirebaseMessaging.onMessage.listen((event) async {
+          RemoteNotification? notification = event.notification;
 
-      FirebaseMessaging.instance.getInitialMessage().then(
-        (value) {
-          if(value!=null){}
-        },
-      );
+          var body = notification?.body;
+          await _flutterLocalNotificationPlugin.show(
+            id: notification.hashCode,
+            title: notification?.title,
+            body: body,
+            notificationDetails: const NotificationDetails(
+              android: AndroidNotificationDetails(
+                "high_importance_channel"
+                ,
+                "High Importance Notifications",
+                channelDescription: "This channel used for important notifications",
+                icon: "@mipmap/ic_launcher",
+                importance: Importance.max,
+              ),
+              iOS: DarwinNotificationDetails(
+                presentAlert: true,
+                presentBadge: true,
+                presentSound: true,
+              ),
+            ),
 
-      FirebaseMessaging.onMessageOpenedApp.listen((message){});
+          );
+        });
+
+        FirebaseMessaging.instance.getInitialMessage().then(
+              (value) {
+            if (value != null) {}
+          },
+        );
+
+        FirebaseMessaging.onMessageOpenedApp.listen((message) {});
+      }catch(err){}
     }
 
 
